@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SAFEx</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">Real-Time Fraud Detection</string>
+    <string name="onboarding_desc_1">SAFEx analyzes your calls automatically to detect digital arrest scams, UPI fraud, and investment scams in real-time.</string>
+    <string name="onboarding_title_2">URL &amp; QR Security Scanner</string>
+    <string name="onboarding_desc_2">Scan suspicious links and QR codes before clicking. We check them against global threat databases.</string>
+    <string name="onboarding_title_3">Device Security Shield</string>
+    <string name="onboarding_desc_3">Monitor your device security status and get instant alerts for risky configurations.</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_next">Next</string>
+
+    <!-- Home -->
+    <string name="home_title">SAFEx Shield</string>
+    <string name="home_security_score">Security Score</string>
+    <string name="home_protection_active">Protection Active</string>
+    <string name="home_protection_inactive">Protection Inactive</string>
+    <string name="home_recent_alerts">Recent Alerts</string>
+    <string name="home_quick_actions">Quick Actions</string>
+    <string name="home_scan_url">Scan URL</string>
+    <string name="home_device_security">Device Security</string>
+    <string name="home_report_fraud">Report Fraud</string>
+
+    <!-- Call Guard -->
+    <string name="call_guard_title">Call Guard</string>
+    <string name="call_guard_protection">Protection Status</string>
+    <string name="call_guard_enable">Enable Call Guard</string>
+    <string name="call_guard_disable">Disable Call Guard</string>
+    <string name="call_guard_recent_calls">Recent Analyzed Calls</string>
+    <string name="call_guard_no_calls">No analyzed calls yet</string>
+    <string name="call_guard_permission_required">Permissions Required</string>
+    <string name="call_guard_permission_desc">Call Guard needs microphone and accessibility permissions to analyze calls.</string>
+
+    <!-- URL Scanner -->
+    <string name="url_scanner_title">URL / QR Scanner</string>
+    <string name="url_scanner_input_label">Enter URL</string>
+    <string name="url_scanner_input_hint">https://example.com</string>
+    <string name="url_scanner_scan_qr">Scan QR Code</string>
+    <string name="url_scanner_manual_input">Manual Input</string>
+    <string name="url_scanner_scan_button">Scan URL</string>
+    <string name="url_scanner_scanning">Scanning…</string>
+    <string name="url_scanner_safe">Safe</string>
+    <string name="url_scanner_suspicious">Suspicious</string>
+    <string name="url_scanner_malicious">Malicious</string>
+    <string name="url_scanner_scan_history">Scan History</string>
+
+    <!-- Device Security -->
+    <string name="device_security_title">Device Security</string>
+    <string name="device_security_overall_score">Overall Security Score</string>
+    <string name="device_security_checks">Security Checks</string>
+    <string name="device_security_root_status">Root Status</string>
+    <string name="device_security_screen_lock">Screen Lock</string>
+    <string name="device_security_play_protect">Play Protect</string>
+    <string name="device_security_developer_mode">Developer Mode</string>
+    <string name="device_security_unknown_sources">Unknown Sources</string>
+    <string name="device_security_status_ok">OK</string>
+    <string name="device_security_status_warning">Warning</string>
+    <string name="device_security_status_alert">Alert</string>
+
+    <!-- History -->
+    <string name="history_title">History</string>
+    <string name="history_calls">Calls</string>
+    <string name="history_scans">Scans</string>
+    <string name="history_alerts">Alerts</string>
+    <string name="history_no_records">No records yet</string>
+    <string name="history_risk_safe">Safe</string>
+    <string name="history_risk_suspicious">Suspicious</string>
+    <string name="history_risk_fraud">Fraud</string>
+
+    <!-- Report Fraud -->
+    <string name="report_fraud_title">Report Fraud</string>
+    <string name="report_fraud_type">Fraud Type</string>
+    <string name="report_fraud_type_digital_arrest">Digital Arrest</string>
+    <string name="report_fraud_type_kyc">KYC Fraud</string>
+    <string name="report_fraud_type_otp">OTP Fraud</string>
+    <string name="report_fraud_type_lottery">Lottery Scam</string>
+    <string name="report_fraud_type_courier">Courier/FedEx Scam</string>
+    <string name="report_fraud_type_investment">Investment Scam</string>
+    <string name="report_fraud_type_job">Job Scam</string>
+    <string name="report_fraud_type_other">Other</string>
+    <string name="report_fraud_description">Description</string>
+    <string name="report_fraud_description_hint">Describe what happened…</string>
+    <string name="report_fraud_submit">Submit Report</string>
+    <string name="report_fraud_ncrp">Report to NCRP (I4C)</string>
+    <string name="report_fraud_cyber_helpline">Call 1930 Helpline</string>
+    <string name="report_fraud_chakshu">Report to Chakshu (DoT)</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_general">General</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_emergency_contact">Emergency Contact</string>
+    <string name="settings_emergency_contact_hint">+91 XXXXXXXXXX</string>
+    <string name="settings_risk_threshold">Risk Alert Threshold</string>
+    <string name="settings_api_keys">API Configuration</string>
+    <string name="settings_openai_key">OpenAI API Key</string>
+    <string name="settings_stt_key">Google STT API Key</string>
+    <string name="settings_virustotal_key">VirusTotal API Key</string>
+    <string name="settings_test_api">Test</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_call_guard_enabled">Call Guard Enabled</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_privacy">Privacy Policy</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_call_guard">Call Guard</string>
+    <string name="nav_scanner">Scanner</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="error_generic">Something went wrong</string>
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_no_internet">No internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="back">Back</string>
+    <string name="empty_state">No data available</string>
+
+    <!-- Risk Levels -->
+    <string name="risk_safe">Safe</string>
+    <string name="risk_suspicious">Suspicious</string>
+    <string name="risk_fraud">Fraud</string>
+
+    <!-- Permissions -->
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_microphone">Microphone permission is required for call recording.</string>
+    <string name="permission_camera">Camera permission is required for QR scanning.</string>
+    <string name="permission_sms">SMS permission is required for emergency alerts.</string>
+    <string name="permission_accessibility">Accessibility permission is required to detect calls.</string>
+    <string name="permission_grant">Grant Permission</string>
+
+    <!-- Accessibility Service -->
+    <string name="accessibility_service_description">SAFEx Call Guard monitors call activity to detect and alert you about potential fraud calls in real-time.</string>
+</resources>
