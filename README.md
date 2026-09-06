@@ -5,10 +5,12 @@
 ![Android](https://img.shields.io/badge/Android-8.0+-green.svg)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![GitHub](https://img.shields.io/badge/GitHub-Ready-brightgreen.svg)
+![Status](https://img.shields.io/badge/Status-Production--Ready-blue.svg)
 
 **A native Android security application designed to protect Indian users from digital fraud**
 
-[Features](#features) • [Architecture](#architecture) • [Setup](#setup) • [Build](#build) • [Documentation](#documentation)
+[Features](#features) • [Architecture](#architecture) • [Setup](#setup) • [Build](#build) • [Documentation](#documentation) • [GitHub](#github)
 
 </div>
 
@@ -372,13 +374,49 @@ We welcome contributions! Please follow these guidelines:
 
 ---
 
-## License
+## 🌐 GitHub
 
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
+**Repository**: [github.com/aditya-upmanyu/Safex](https://github.com/aditya-upmanyu/Safex)
+
+### Getting Started with GitHub
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/aditya-upmanyu/Safex.git
+   cd Safex
+   ```
+
+2. **Fork & Contribute**
+   - Fork the repository
+   - Create a feature branch
+   - Submit a pull request
+   - See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
+
+3. **Report Issues**
+   - Use [GitHub Issues](https://github.com/aditya-upmanyu/Safex/issues)
+   - Provide clear description and reproduction steps
+
+4. **Discussions**
+   - Ask questions in [Discussions](https://github.com/aditya-upmanyu/Safex/discussions)
+   - Share ideas and get community feedback
 
 ---
 
-## Acknowledgments
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+- Code style and standards
+- Testing requirements
+- Pull request process
+- Community guidelines
+
+---
 
 - **Indian Cyber Crime Coordination Centre (I4C)**
 - **CERT-In** for threat intelligence
