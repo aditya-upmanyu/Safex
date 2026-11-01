@@ -6,18 +6,26 @@ import android.os.IBinder
 import android.util.Log
 import com.safex.app.data.datastore.SettingsDataStore
 import com.safex.app.domain.model.CallRecord
-import com.safex.app.domain.model.RiskLevel
-import com.safex.app.domain.repository.CallRepository
 import com.safex.app.domain.usecase.AnalyzeCallUseCase
+import com.safex.app.domain.usecase.OfflineFraudAnalysisUseCase
+import com.safex.app.domain.usecase.TranscribeAudioUseCase
+import com.safex.app.domain.repository.CallRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
+import java.io.File
 
 @AndroidEntryPoint
 class AnalysisPipelineService : Service() {
 
     @Inject
     lateinit var analyzeCallUseCase: AnalyzeCallUseCase
+
+    @Inject
+    lateinit var offlineFraudAnalysisUseCase: OfflineFraudAnalysisUseCase
+
+    @Inject
+    lateinit var transcribeAudioUseCase: TranscribeAudioUseCase
 
     @Inject
     lateinit var callRepository: CallRepository
@@ -31,8 +39,12 @@ class AnalysisPipelineService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         serviceScope.launch {
             try {
-                delay(3000) // Wait for call to fully end
-                performAnalysis()
+                val recordingFile = intent?.getStringExtra("RECORDING_FILE")
+                val callDuration = intent?.getLongExtra("CALL_DURATION", 0L) ?: 0L
+                val phoneNumber = intent?.getStringExtra("PHONE_NUMBER") ?: "Unknown"
+                
+                delay(1000) // Wait for recording to finalize
+                performAnalysis(recordingFile, callDuration, phoneNumber)
             } catch (e: Exception) {
                 Log.e(TAG, "Analysis failed", e)
             } finally {
@@ -42,47 +54,112 @@ class AnalysisPipelineService : Service() {
         return START_NOT_STICKY
     }
 
-    private suspend fun performAnalysis() {
-        // Mock transcript for skeleton - real implementation would use actual recorded audio
-        val mockTranscript = "This is a test call transcript"
-        
-        Log.d(TAG, "Starting analysis pipeline")
+    private suspend fun performAnalysis(recordingFile: String?, callDuration: Long, phoneNumber: String) {
+        Log.d(TAG, "Starting analysis pipeline for recording: $recordingFile")
 
-        val analysisResult = analyzeCallUseCase(mockTranscript)
-
-        if (analysisResult.isSuccess) {
-            val analysis = analysisResult.getOrNull()!!
+        try {
+            var transcript = "Test call analysis"
             
-            val callRecord = CallRecord(
-                phoneNumber = "Unknown",
-                timestamp = System.currentTimeMillis(),
-                duration = 0L,
-                transcript = mockTranscript,
-                riskScore = analysis.riskScore,
-                verdict = analysis.verdict,
-                confidence = analysis.confidence,
-                detectedPatterns = analysis.detectedPatterns,
-                keywords = analysis.keywords,
-                reason = analysis.reason,
-                reasonHindi = analysis.reasonHindi,
-                recommendedAction = analysis.recommendedAction,
-                status = "ANALYZED"
-            )
-
-            callRepository.insertCall(callRecord)
-
-            // Trigger alert if high risk
-            val threshold = settingsDataStore.getRiskThresholdSync()
-            if (analysis.riskScore >= threshold) {
-                val alertIntent = Intent(this, FraudAlertService::class.java)
-                alertIntent.putExtra("RISK_SCORE", analysis.riskScore)
-                alertIntent.putExtra("VERDICT", analysis.verdict.name)
-                startService(alertIntent)
+            // Try to transcribe the audio file
+            if (recordingFile != null && File(recordingFile).exists()) {
+                val transcriptionResult = transcribeAudioUseCase(recordingFile)
+                transcript = transcriptionResult.getOrNull() ?: transcript
+                Log.d(TAG, "Transcription result: $transcript")
             }
 
-            Log.d(TAG, "Analysis complete: ${analysis.verdict}, Score: ${analysis.riskScore}")
-        } else {
-            Log.e(TAG, "Analysis failed: ${analysisResult.exceptionOrNull()?.message}")
+            // OFFLINE MODE: Perform offline fraud analysis first (faster, no API)
+            Log.d(TAG, "🔍 [OFFLINE MODE] Starting keyword-based fraud detection...")
+            val offlineResult = offlineFraudAnalysisUseCase(transcript)
+            var finalAnalysis: com.safex.app.domain.model.FraudAnalysis?
+            var analysisMode = "OFFLINE"
+
+            if (offlineResult.isSuccess) {
+                finalAnalysis = offlineResult.getOrNull()
+                Log.d(TAG, "✅ [OFFLINE] Analysis complete - Score: ${finalAnalysis?.riskScore}, Verdict: ${finalAnalysis?.verdict}")
+                
+                // ONLINE MODE: If offline score < 70 AND API key configured, try OpenAI for better accuracy
+                if (finalAnalysis != null && finalAnalysis.riskScore < 70) {
+                    val openAIKey = com.safex.app.BuildConfig.OPENAI_API_KEY
+                    if (openAIKey.isNotBlank()) {
+                        Log.d(TAG, "🌐 [ONLINE MODE] Attempting OpenAI enhancement for better accuracy...")
+                        try {
+                            val onlineResult = withTimeoutOrNull(30000) {
+                                analyzeCallUseCase(transcript)
+                            }
+                            
+                            if (onlineResult != null && onlineResult.isSuccess) {
+                                finalAnalysis = onlineResult.getOrNull()!!
+                                analysisMode = "ONLINE"
+                                Log.d(TAG, "✅ [ONLINE] Enhanced analysis complete - Score: ${finalAnalysis.riskScore}, Verdict: ${finalAnalysis.verdict}")
+                            } else {
+                                Log.w(TAG, "⚠️ [ONLINE] API analysis failed, using offline results")
+                            }
+                        } catch (e: TimeoutCancellationException) {
+                            Log.w(TAG, "⏱️ [ONLINE] API call timeout, using offline results")
+                        } catch (e: Exception) {
+                            Log.w(TAG, "⚠️ [ONLINE] API call failed, using offline results: ${e.message}")
+                        }
+                    } else {
+                        Log.d(TAG, "ℹ️ [OFFLINE] No OpenAI API key configured, using offline analysis only")
+                    }
+                }
+            } else {
+                Log.e(TAG, "❌ Offline analysis failed: ${offlineResult.exceptionOrNull()?.message}")
+                return
+            }
+
+            // Save analysis result
+            if (finalAnalysis != null) {
+                val callRecord = CallRecord(
+                    phoneNumber = phoneNumber,
+                    timestamp = System.currentTimeMillis(),
+                    duration = callDuration,
+                    transcript = transcript,
+                    riskScore = finalAnalysis.riskScore,
+                    verdict = finalAnalysis.verdict,
+                    confidence = finalAnalysis.confidence,
+                    detectedPatterns = finalAnalysis.detectedPatterns,
+                    keywords = finalAnalysis.keywords,
+                    reason = finalAnalysis.reason,
+                    reasonHindi = finalAnalysis.reasonHindi,
+                    recommendedAction = finalAnalysis.recommendedAction,
+                    status = "ANALYZED"
+                )
+
+                // Save to database
+                callRepository.insertCall(callRecord)
+                Log.d(TAG, "📊 Call record saved [$analysisMode]: ${finalAnalysis.verdict}, Score: ${finalAnalysis.riskScore}, Phone: $phoneNumber")
+
+                // Trigger alert if high risk
+                val threshold = settingsDataStore.getRiskThresholdSync()
+                if (finalAnalysis.riskScore >= threshold) {
+                    val alertIntent = Intent(this, FraudAlertService::class.java)
+                    alertIntent.putExtra("RISK_SCORE", finalAnalysis.riskScore)
+                    alertIntent.putExtra("VERDICT", finalAnalysis.verdict.name)
+                    alertIntent.putExtra("REASON", finalAnalysis.reason)
+                    alertIntent.putExtra("REASON_HINDI", finalAnalysis.reasonHindi)
+                    alertIntent.putExtra("ACTION", finalAnalysis.recommendedAction)
+                    alertIntent.putExtra("PHONE_NUMBER", phoneNumber)
+                    startService(alertIntent)
+                    
+                    Log.d(TAG, "🚨 FRAUD ALERT TRIGGERED [$analysisMode] - Score: ${finalAnalysis.riskScore} - $phoneNumber")
+                }
+
+                Log.d(TAG, "✅ Analysis pipeline complete [$analysisMode]: ${finalAnalysis.verdict}, Confidence: ${finalAnalysis.confidence}")
+            }
+
+            // Clean up recording file
+            if (recordingFile != null) {
+                try {
+                    File(recordingFile).delete()
+                    Log.d(TAG, "Recording file deleted: $recordingFile")
+                } catch (e: Exception) {
+                    Log.w(TAG, "Failed to delete recording file", e)
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in analysis pipeline", e)
         }
     }
 
@@ -93,3 +170,4 @@ class AnalysisPipelineService : Service() {
         serviceScope.cancel()
     }
 }
+

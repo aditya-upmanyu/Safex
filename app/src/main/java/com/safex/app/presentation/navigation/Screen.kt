@@ -9,4 +9,10 @@ sealed class Screen(val route: String) {
     data object History : Screen("history")
     data object ReportFraud : Screen("report_fraud")
     data object Settings : Screen("settings")
+    data object Dashboard : Screen("dashboard")
+    data object EmergencySOS : Screen("emergency_sos")
+    data object ContactVerification : Screen("contact_verification")
+    data object VoiceAnalysis : Screen("voice_analysis/{callId}") {
+        fun createRoute(callId: Long) = "voice_analysis/$callId"
+    }
 }

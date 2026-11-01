@@ -99,6 +99,16 @@
             </intent-filter>
         </receiver>
 
+        <!-- Call State Receiver (for incoming call detection) -->
+        <receiver
+            android:name=".receiver.CallStateReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

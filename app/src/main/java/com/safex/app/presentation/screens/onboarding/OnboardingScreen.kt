@@ -18,7 +18,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.safex.app.R
 import com.safex.app.presentation.theme.Spacing
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.tooling.preview.Preview
+import com.safex.app.presentation.theme.SAFExTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     onNavigateNext: () -> Unit,
@@ -127,3 +131,20 @@ data class OnboardingPage(
     val title: String,
     val description: String
 )
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun OnboardingPreview() {
+    SAFExTheme {
+        Surface {
+            OnboardingPageContent(
+                page = OnboardingPage(
+                    icon = Icons.Default.Security,
+                    title = "AI Scam Call Guard",
+                    description = "Real-time AI monitoring detects fraudulent patterns and protects your conversations."
+                )
+            )
+        }
+    }
+}
+

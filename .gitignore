@@ -1,46 +1,74 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+# APK files
 *.apk
 *.aab
+*.ap_
 *.dex
+
+# Class files
 *.class
+
+# Log files
 *.log
-*.hprof
-*.pro
-*.kapt_metadata
-/app/release/
-/app/debug/
 
-# Hilt/Dagger generated artifacts
-Dagger*.class
-Dagger*.java
-Dagger*.dex
-Hilt_*.class
-Hilt_*.java
-Hilt_*.dex
-_com_safex_*.class
-_com_safex_*.java
-_com_safex_*.dex
-*.metadata.json
+# Generated files
+bin/
+gen/
+out/
+release/
 
-# IDE generated files in root
-SAFEx*.xml
-!app/src/main/res/**/*.xml
-!app/src/main/AndroidManifest.xml
-*.contexts.zip
-*.tasks.zip
+# Gradle files
+.gradle/
+build/
 
+# Local configuration file (sdk path, etc)
+local.properties
 
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Android Studio
+captures/
+.navigation/
+*.ap_
+*.aab
+
+# External native build folder generated in Android Studio 2.2 and later
+.externalNativeBuild
+.cxx/
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
+# Freeline
+freeline.py
+freeline/
+freeline_project_description.json
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+
+# Version control
+vcs.xml
+
+# Misc
+*.swp
+*~
+.DS_Store

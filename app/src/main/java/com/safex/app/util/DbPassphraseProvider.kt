@@ -15,7 +15,7 @@ object DbPassphraseProvider {
     private const val PREFS_FILENAME = "safex_secure_prefs"
     private const val KEY_DB_PASSPHRASE = "db_passphrase"
 
-    fun getOrCreatePassphrase(context: Context): CharArray {
+    fun getOrCreatePassphrase(context: Context): ByteArray {
         val masterKey = MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
@@ -37,29 +37,15 @@ object DbPassphraseProvider {
                 .apply()
         }
 
-        return passphrase.toCharArray()
+        return passphrase.toByteArray(Charsets.UTF_8)
     }
 
     private fun generateSecurePassphrase(): String {
-        val keyGenerator = KeyGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_AES,
-            "AndroidKeyStore"
-        )
-        
-        val keyGenParameterSpec = KeyGenParameterSpec.Builder(
-            KEYSTORE_ALIAS,
-            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-        )
-            .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-            .setKeySize(256)
-            .build()
-
-        keyGenerator.init(keyGenParameterSpec)
-        val secretKey = keyGenerator.generateKey()
-
-        // Generate a random passphrase based on key material
-        return secretKey.encoded.joinToString("") { "%02x".format(it) }.take(64)
+        // Generate a 256-bit cryptographically secure random passphrase
+        val secureRandom = java.security.SecureRandom()
+        val keyBytes = ByteArray(32)
+        secureRandom.nextBytes(keyBytes)
+        return keyBytes.joinToString("") { "%02x".format(it) }
     }
 
     fun clearPassphrase(context: Context) {

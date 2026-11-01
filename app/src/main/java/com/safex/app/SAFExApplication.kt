@@ -7,5 +7,7 @@ import dagger.hilt.android.HiltAndroidApp
 class SAFExApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        // Load native SQLCipher library for 16 KB page-size support
+        System.loadLibrary("sqlcipher")
     }
 }

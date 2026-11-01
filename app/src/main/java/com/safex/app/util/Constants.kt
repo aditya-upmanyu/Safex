@@ -38,28 +38,162 @@ object Constants {
     const val GOOGLE_STT_BASE_URL = "https://speech.googleapis.com/"
     const val VIRUSTOTAL_BASE_URL = "https://www.virustotal.com/api/v3/"
 
-    // Indian Fraud Keywords
+    // Indian Fraud Keywords - Comprehensive Pattern Database
     val DIGITAL_ARREST_KEYWORDS = listOf(
-        "CBI", "ED", "RBI", "warrant", "arrest", "giraftari",
-        "court", "case darj", "video call court", "police"
+        // CBI Keywords
+        "CBI", "central bureau investigation", "federal investigation",
+        // ED Keywords
+        "ED", "enforcement directorate", "money laundering",
+        // RBI Keywords
+        "RBI", "reserve bank", "banking regulator",
+        // ITD Keywords
+        "income tax", "IT", "tax department", "tax investigation",
+        // Police Keywords
+        "police", "FIR", "case registered", "arrest warrant",
+        // Legal Keywords
+        "warrant", "court case", "case filed", "legal action",
+        "court order", "bail", "custody", "giraftari",
+        // Hindi Mixed
+        "giraftari", "girftaar", "pakda jayega", "case darj",
+        "video call court", "virtual court", "e-court",
+        // Threat Keywords
+        "serious action", "immediate action", "urgent action",
+        "freeze account", "block account", "suspend account"
     )
+    
     val KYC_FRAUD_KEYWORDS = listOf(
-        "account freeze", "KYC update", "verify karo", "bank officer"
+        // Account Freeze/Verification
+        "account freeze", "frozen account", "account suspended",
+        "account locked", "verify account", "account verification",
+        // KYC
+        "KYC update", "KYC verification", "KYC compliance",
+        "complete KYC", "update KYC immediately",
+        // Bank Identity
+        "bank officer", "bank staff", "banking official",
+        "RBI official", "banking authority", "bank representative",
+        // Personal Info Request
+        "verify karo", "confirm karo", "identity verification",
+        "account details", "personal details", "confidential information",
+        // Urgency
+        "update immediately", "verify now", "confirm details quickly"
     )
+    
     val OTP_FRAUD_KEYWORDS = listOf(
-        "OTP", "share karo", "verify", "account unlock"
+        // OTP Related
+        "OTP", "one time password", "one-time code",
+        "verification code", "security code", "PIN code",
+        // Share Request
+        "share OTP", "share code", "tell me OTP", "read OTP",
+        "provide code", "enter OTP", "give password",
+        // Account Actions
+        "unlock account", "verify account", "confirm payment",
+        "authorize transaction", "confirm identity",
+        // Threats
+        "OTP timeout", "OTP expiry", "code expiring",
+        "urgent verification", "immediate confirmation"
     )
+    
     val LOTTERY_SCAM_KEYWORDS = listOf(
-        "prize winner", "lottery", "claim karo", "processing fee"
+        // Win Claims
+        "prize winner", "congratulations won", "you have won",
+        "claim prize", "claim reward", "winning amount",
+        "lottery won", "drawn winner", "selected winner",
+        // Lottery Types
+        "lottery", "lucky draw", "prize draw", "raffle",
+        "sweepstake", "contest winner", "lucky person",
+        // Amount Claims
+        "lakhs", "crores", "lakh rupees", "crore rupees",
+        "huge amount", "big money", "jackpot",
+        // Process
+        "claim karo", "processing fee", "transfer fee",
+        "claim fee", "document fee", "tax payment required",
+        // Suspicious
+        "you didn't participate", "automatic entry", "lucky selection"
     )
+    
     val COURIER_SCAM_KEYWORDS = listOf(
-        "parcel", "drug", "customs", "FedEx", "officer speaking"
+        // Package Claims
+        "parcel", "package", "delivery", "shipment",
+        "box", "cargo", "consignment", "customs",
+        // Illegal Claims
+        "drug", "drugs", "narcotics", "illegal items",
+        "prohibited", "contraband", "seized package",
+        // Authority Impersonation
+        "customs officer", "courier officer", "customs authority",
+        "FedEx", "DHL", "Amazon", "official speaking",
+        // Threats
+        "arrest warrant", "legal action", "court case",
+        "fine amount", "penalty", "deposit required",
+        // Action Required
+        "pay fine", "deposit money", "verify details immediately"
     )
+    
     val INVESTMENT_SCAM_KEYWORDS = listOf(
-        "guaranteed returns", "SEBI registered", "expert trader"
+        // Returns Promise
+        "guaranteed returns", "guaranteed profit", "assured returns",
+        "100% return", "fixed income", "guaranteed income",
+        "risk-free investment", "safe investment",
+        // Authority Claims
+        "SEBI registered", "SEBI approved", "regulatory approved",
+        "government approved", "certified", "verified investment",
+        // Expert Claims
+        "expert trader", "professional manager", "fund manager",
+        "investment expert", "portfolio manager", "financial expert",
+        // Attractive Terms
+        "high returns", "quick returns", "easy money",
+        "passive income", "minimum investment", "no risk",
+        // Company Names
+        "investment group", "trading company", "forex trader",
+        "crypto currency", "bitcoin", "international company"
     )
+    
     val JOB_SCAM_KEYWORDS = listOf(
-        "work from home", "advance fee", "training deposit"
+        // Job Offers
+        "work from home", "remote job", "part-time job",
+        "urgent hiring", "recruitment", "job offer",
+        "position available", "hiring now", "positions open",
+        // Easy Work
+        "easy money", "simple work", "no experience needed",
+        "no qualification needed", "easy process", "quick cash",
+        // Suspicious Terms
+        "advance fee", "registration fee", "training fee",
+        "processing fee", "deposit required", "upfront payment",
+        // Company Claims
+        "multinational", "international company", "US company",
+        "UK company", "reputed company", "established firm",
+        // Contact
+        "work for us", "join our team", "be our agent",
+        "become distributor", "franchise opportunity"
+    )
+    
+    // UPI & Payment Fraud (NEW)
+    val UPI_FRAUD_KEYWORDS = listOf(
+        // UPI Claims
+        "UPI", "google pay", "paytm", "phonepe", "whatsapp pay",
+        "payment app", "digital payment", "online transfer",
+        // Verification Tricks
+        "verify UPI", "confirm UPI", "link UPI",
+        "UPI registration", "update UPI", "register payment",
+        // Reversal Scams
+        "money reversed", "payment failed", "transaction failed",
+        "refund pending", "claim refund", "get money back",
+        // Threats
+        "account blocked", "UPI locked", "payment suspended",
+        "transaction limit exceeded", "compliance issue"
+    )
+    
+    // Technical Support Scam (NEW)
+    val TECH_SUPPORT_KEYWORDS = listOf(
+        // Claims
+        "tech support", "technical support", "customer support",
+        "microsoft", "apple", "google", "antivirus",
+        "virus detected", "malware found", "security issue",
+        // Actions
+        "allow remote access", "give access", "remote desktop",
+        "click link", "download software", "run command",
+        // Threats
+        "system compromised", "data at risk", "immediate action",
+        "fix now", "solve immediately", "urgent problem"
     )
 
     // Government Helplines
