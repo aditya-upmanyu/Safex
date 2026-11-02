@@ -76,7 +76,8 @@ android {
         }
         // Fix 16 KB page size alignment for Android 15+
         jniLibs {
-            useLegacyPackaging = false
+            // Use compressed libraries for 16 KB compatibility
+            useLegacyPackaging = true
             pickFirsts += listOf("**/*.so")
         }
     }
@@ -129,10 +130,12 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
 
-    // Standard SQLite with Android Jetpack Security for file-level encryption
-    // This is 16 KB compatible and officially supported by Google
+    // Standard SQLite - 16 KB compatible
     implementation("androidx.sqlite:sqlite-framework:2.4.0")
     implementation("androidx.sqlite:sqlite-ktx:2.4.0")
+
+    // Security Crypto for encryption (16 KB compatible)
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
