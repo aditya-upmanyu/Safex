@@ -39,6 +39,7 @@ fun EnhancedHomeScreen(
     onNavigateToHistory: () -> Unit = {},
     onNavigateToEmergency: () -> Unit = {},
     onNavigateToVerification: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {},
     viewModel: EnhancedHomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -88,7 +89,7 @@ fun EnhancedHomeScreen(
                         }
                     }
 
-                    IconButton(onClick = { /* Settings */ }) {
+                    IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, "Settings")
                     }
                 },

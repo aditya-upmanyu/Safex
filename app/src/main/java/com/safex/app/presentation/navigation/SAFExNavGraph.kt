@@ -45,7 +45,8 @@ fun SAFExNavGraph(
                 onNavigateToScanner = { navController.navigate(Screen.UrlScanner.route) },
                 onNavigateToHistory = { navController.navigate(Screen.History.route) },
                 onNavigateToEmergency = { navController.navigate(Screen.EmergencySOS.route) },
-                onNavigateToVerification = { navController.navigate(Screen.ContactVerification.route) }
+                onNavigateToVerification = { navController.navigate(Screen.ContactVerification.route) },
+                onNavigateToSettings = { navController.navigate(Screen.Settings.route) }
             )
         }
 
