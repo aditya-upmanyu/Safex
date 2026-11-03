@@ -24,6 +24,7 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmergencySOSScreen(
+    onNavigateBack: () -> Unit = {},
     viewModel: EmergencySOSViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -45,7 +46,7 @@ fun EmergencySOSScreen(
             TopAppBar(
                 title = { Text("Emergency SOS", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = { /* Navigate back */ }) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, "Back")
                     }
                 },
@@ -201,7 +202,10 @@ fun EmergencySOSScreen(
                         )
 
                         uiState.emergencyContacts.forEach { contact ->
-                            EmergencyContactItem(contact)
+                            EmergencyContactItem(
+                                contact = contact,
+                                onRemoveClick = { viewModel.removeEmergencyContact(contact) }
+                            )
                             Spacer(modifier = Modifier.height(12.dp))
                         }
 
@@ -318,7 +322,10 @@ fun EmergencySOSScreen(
 }
 
 @Composable
-fun EmergencyContactItem(contact: EmergencyContact) {
+fun EmergencyContactItem(
+    contact: EmergencyContact,
+    onRemoveClick: () -> Unit = {}
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -362,7 +369,7 @@ fun EmergencyContactItem(contact: EmergencyContact) {
                 )
             }
 
-            IconButton(onClick = { /* Remove contact */ }) {
+            IconButton(onClick = onRemoveClick) {
                 Icon(
                     Icons.Default.Delete,
                     contentDescription = "Remove",

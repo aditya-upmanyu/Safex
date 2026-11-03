@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun VoiceAnalysisScreen(
     callId: Long,
+    onNavigateBack: () -> Unit = {},
     viewModel: VoiceAnalysisViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -30,7 +31,7 @@ fun VoiceAnalysisScreen(
             TopAppBar(
                 title = { Text("Voice Analysis", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = { /* Navigate back */ }) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, "Back")
                     }
                 }

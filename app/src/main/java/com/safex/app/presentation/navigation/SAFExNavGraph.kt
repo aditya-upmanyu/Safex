@@ -46,20 +46,29 @@ fun SAFExNavGraph(
                 onNavigateToHistory = { navController.navigate(Screen.History.route) },
                 onNavigateToEmergency = { navController.navigate(Screen.EmergencySOS.route) },
                 onNavigateToVerification = { navController.navigate(Screen.ContactVerification.route) },
-                onNavigateToSettings = { navController.navigate(Screen.Settings.route) }
+                onNavigateToSettings = { navController.navigate(Screen.Settings.route) },
+                onNavigateToDeviceSecurity = { navController.navigate(Screen.DeviceSecurity.route) },
+                onNavigateToReportFraud = { navController.navigate(Screen.ReportFraud.route) }
             )
         }
 
         composable(Screen.Dashboard.route) {
-            DashboardScreen()
+            DashboardScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.EmergencySOS.route) {
-            EmergencySOSScreen()
+            EmergencySOSScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.ContactVerification.route) {
-            ContactVerificationScreen()
+            ContactVerificationScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToReport = { navController.navigate(Screen.ReportFraud.route) }
+            )
         }
 
         composable(
@@ -67,12 +76,18 @@ fun SAFExNavGraph(
             arguments = listOf(navArgument("callId") { type = NavType.LongType })
         ) { backStackEntry ->
             val callId = backStackEntry.arguments?.getLong("callId") ?: 0L
-            VoiceAnalysisScreen(callId = callId)
+            VoiceAnalysisScreen(
+                callId = callId,
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.CallGuard.route) {
             CallGuardScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToVoiceAnalysis = { callId ->
+                    navController.navigate(Screen.VoiceAnalysis.createRoute(callId))
+                }
             )
         }
 
@@ -90,7 +105,10 @@ fun SAFExNavGraph(
 
         composable(Screen.History.route) {
             HistoryScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToVoiceAnalysis = { callId ->
+                    navController.navigate(Screen.VoiceAnalysis.createRoute(callId))
+                }
             )
         }
 

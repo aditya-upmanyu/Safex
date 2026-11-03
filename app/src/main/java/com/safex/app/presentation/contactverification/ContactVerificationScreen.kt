@@ -25,6 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactVerificationScreen(
+    onNavigateBack: () -> Unit = {},
+    onNavigateToReport: () -> Unit = {},
     viewModel: ContactVerificationViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -35,7 +37,7 @@ fun ContactVerificationScreen(
             TopAppBar(
                 title = { Text("Contact Verification", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = { /* Navigate back */ }) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, "Back")
                     }
                 },
@@ -131,7 +133,10 @@ fun ContactVerificationScreen(
                 exit = fadeOut() + shrinkVertically()
             ) {
                 uiState.verificationResult?.let { result ->
-                    VerificationResultCard(result)
+                    VerificationResultCard(
+                        result = result,
+                        onReportClick = onNavigateToReport
+                    )
                 }
             }
 
@@ -153,7 +158,10 @@ fun ContactVerificationScreen(
 }
 
 @Composable
-fun VerificationResultCard(result: VerificationResult) {
+fun VerificationResultCard(
+    result: VerificationResult,
+    onReportClick: () -> Unit = {}
+) {
     val containerColor = when (result.trustLevel) {
         TrustLevel.SAFE -> MaterialTheme.colorScheme.primaryContainer
         TrustLevel.SUSPICIOUS -> MaterialTheme.colorScheme.tertiaryContainer
@@ -297,7 +305,7 @@ fun VerificationResultCard(result: VerificationResult) {
                 }
 
                 OutlinedButton(
-                    onClick = { /* Report */ },
+                    onClick = onReportClick,
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(12.dp)
                 ) {

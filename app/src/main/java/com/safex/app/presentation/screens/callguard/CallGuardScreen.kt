@@ -22,6 +22,7 @@ import com.safex.app.util.UiState
 @Composable
 fun CallGuardScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToVoiceAnalysis: (Long) -> Unit = {},
     viewModel: CallGuardViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -61,7 +62,7 @@ fun CallGuardScreen(
                     items(state.data) { call ->
                         CallRecordItem(
                             record = call,
-                            onClick = { }
+                            onClick = { onNavigateToVoiceAnalysis(call.id) }
                         )
                     }
                 }

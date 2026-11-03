@@ -40,6 +40,8 @@ fun EnhancedHomeScreen(
     onNavigateToEmergency: () -> Unit = {},
     onNavigateToVerification: () -> Unit = {},
     onNavigateToSettings: () -> Unit = {},
+    onNavigateToDeviceSecurity: () -> Unit = {},
+    onNavigateToReportFraud: () -> Unit = {},
     viewModel: EnhancedHomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -75,7 +77,7 @@ fun EnhancedHomeScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Notifications */ }) {
+                    IconButton(onClick = onNavigateToHistory) {
                         BadgedBox(
                             badge = {
                                 if (uiState.notificationCount > 0) {
@@ -112,7 +114,8 @@ fun EnhancedHomeScreen(
                 isActive = uiState.isProtectionActive,
                 protectionScore = uiState.protectionScore,
                 pulseScale = pulseScale,
-                onToggleProtection = { viewModel.toggleProtection() }
+                onToggleProtection = { viewModel.toggleProtection() },
+                onShieldClick = onNavigateToDeviceSecurity
             )
 
             // Quick Stats Row
@@ -156,12 +159,14 @@ fun ProtectionStatusHeroCard(
     isActive: Boolean,
     protectionScore: Int,
     pulseScale: Float,
-    onToggleProtection: () -> Unit
+    onToggleProtection: () -> Unit,
+    onShieldClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(240.dp),
+            .height(240.dp)
+            .clickable(onClick = onShieldClick),
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isActive)

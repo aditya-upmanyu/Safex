@@ -22,6 +22,7 @@ import com.safex.app.util.UiState
 @Composable
 fun HistoryScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToVoiceAnalysis: (Long) -> Unit = {},
     viewModel: HistoryViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -61,7 +62,7 @@ fun HistoryScreen(
                     items(state.data) { record ->
                         CallRecordItem(
                             record = record,
-                            onClick = { }
+                            onClick = { onNavigateToVoiceAnalysis(record.id) }
                         )
                     }
                 }

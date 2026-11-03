@@ -48,7 +48,11 @@ class CallStateReceiver : BroadcastReceiver() {
                 putExtra("PHONE_NUMBER", phoneNumber)
                 putExtra("CALL_START_TIME", System.currentTimeMillis())
             }
-            context.startService(intent)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
             Log.d("CallStateReceiver", "✅ Call recording started for: $phoneNumber")
         } catch (e: Exception) {
             Log.e("CallStateReceiver", "Failed to start recording", e)
