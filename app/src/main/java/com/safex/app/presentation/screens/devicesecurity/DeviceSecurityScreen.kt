@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -481,11 +482,19 @@ private fun RecommendationCard(
                 
                 Button(
                     onClick = onActionClick,
-                    colors = ButtonDefaults.buttonColors(containerColor = ShieldBlue),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ShieldBlue,
+                        contentColor = Color.White
+                    ),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.height(40.dp)
                 ) {
-                    Text(recommendation.remediation.label, fontSize = 14.sp)
+                    Text(
+                        recommendation.remediation.label,
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
         }
