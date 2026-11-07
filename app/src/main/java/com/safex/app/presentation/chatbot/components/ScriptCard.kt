@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.safex.app.domain.chatbot.model.*
 import com.safex.app.presentation.chatbot.ChatDimensConfig
 
@@ -26,16 +27,23 @@ fun ScriptCard(
     onFeedbackUp: () -> Unit,
     onFeedbackDown: () -> Unit
 ) {
-    val urgencyContainerColor = when (topic.urgency) {
-        Urgency.EMERGENCY -> MaterialTheme.colorScheme.errorContainer
-        Urgency.URGENT -> MaterialTheme.colorScheme.tertiaryContainer
-        Urgency.NORMAL -> MaterialTheme.colorScheme.secondaryContainer
-    }
-
-    val urgencyContentColor = when (topic.urgency) {
-        Urgency.EMERGENCY -> MaterialTheme.colorScheme.onErrorContainer
-        Urgency.URGENT -> MaterialTheme.colorScheme.onTertiaryContainer
-        Urgency.NORMAL -> MaterialTheme.colorScheme.onSecondaryContainer
+    // Use explicit colors for better visibility
+    val (urgencyBg, urgencyText, urgencyBorder) = when (topic.urgency) {
+        Urgency.EMERGENCY -> Triple(
+            androidx.compose.ui.graphics.Color(0xFFEF4444),
+            androidx.compose.ui.graphics.Color.White,
+            androidx.compose.ui.graphics.Color(0xFFDC2626)
+        )
+        Urgency.URGENT -> Triple(
+            androidx.compose.ui.graphics.Color(0xFFF59E0B),
+            androidx.compose.ui.graphics.Color.White,
+            androidx.compose.ui.graphics.Color(0xFFD97706)
+        )
+        Urgency.NORMAL -> Triple(
+            androidx.compose.ui.graphics.Color(0xFF3B82F6),
+            androidx.compose.ui.graphics.Color.White,
+            androidx.compose.ui.graphics.Color(0xFF2563EB)
+        )
     }
 
     Card(
@@ -44,72 +52,86 @@ fun ScriptCard(
             .padding(horizontal = 8.dp, vertical = 6.dp),
         shape = RoundedCornerShape(dimens.cardCornerRadius),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = androidx.compose.ui.graphics.Color.White
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        border = BorderStroke(1.5.dp, androidx.compose.ui.graphics.Color(0xFFE5E7EB))
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(18.dp)) {
             // Header: Topic Title & Urgency Badge
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Top
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f).padding(end = 8.dp)
                 ) {
                     Icon(
                         imageVector = getTopicIcon(topic.icon),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(24.dp)
+                        tint = androidx.compose.ui.graphics.Color(0xFF3B82F6),
+                        modifier = Modifier.size(26.dp)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = topic.chipLabel,
                         fontWeight = FontWeight.Bold,
-                        fontSize = dimens.headlineSize,
-                        color = MaterialTheme.colorScheme.onSurface
+                        fontSize = dimens.headlineSize.times(1.1f),
+                        color = androidx.compose.ui.graphics.Color(0xFF111827),
+                        lineHeight = 24.sp
                     )
                 }
 
                 Surface(
-                    color = urgencyContainerColor,
-                    shape = RoundedCornerShape(8.dp)
+                    color = urgencyBg,
+                    shape = RoundedCornerShape(6.dp),
+                    border = BorderStroke(1.dp, urgencyBorder)
                 ) {
                     Text(
                         text = topic.urgency.name,
-                        color = urgencyContentColor,
-                        fontSize = dimens.subtextSize,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        color = urgencyText,
+                        fontSize = maxOf((dimens.subtextSize * 0.9f).value, 11f).sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
             // Empathy Opening
-            Text(
-                text = "\"${topic.empathyOpening}\"",
-                fontStyle = FontStyle.Italic,
-                fontSize = dimens.bodySize,
-                color = MaterialTheme.colorScheme.primary
-            )
+            Surface(
+                shape = RoundedCornerShape(8.dp),
+                color = androidx.compose.ui.graphics.Color(0xFFEFF6FF),
+                border = BorderStroke(1.dp, androidx.compose.ui.graphics.Color(0xFFBFDBFE))
+            ) {
+                Text(
+                    text = "\"${topic.empathyOpening}\"",
+                    fontStyle = FontStyle.Italic,
+                    fontSize = dimens.bodySize,
+                    color = androidx.compose.ui.graphics.Color(0xFF1E40AF),
+                    modifier = Modifier.padding(12.dp),
+                    lineHeight = 20.sp
+                )
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Headline
             Text(
                 text = topic.headline,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = dimens.bodySize,
-                color = MaterialTheme.colorScheme.onSurface
+                color = androidx.compose.ui.graphics.Color(0xFF1F2937),
+                lineHeight = 22.sp
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 14.dp),
+                color = androidx.compose.ui.graphics.Color(0xFFE5E7EB)
+            )
 
             // Section: Why
             if (topic.why.isNotEmpty()) {
@@ -117,104 +139,155 @@ fun ScriptCard(
                     text = "Why this matters:",
                     fontWeight = FontWeight.Bold,
                     fontSize = dimens.bodySize,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = androidx.compose.ui.graphics.Color(0xFF111827)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 topic.why.forEach { point ->
-                    Row(modifier = Modifier.padding(vertical = 2.dp)) {
-                        Text("• ", fontWeight = FontWeight.Bold, fontSize = dimens.bodySize)
-                        Text(point, fontSize = dimens.bodySize)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 3.dp)
+                    ) {
+                        Text(
+                            "• ",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = dimens.bodySize,
+                            color = androidx.compose.ui.graphics.Color(0xFF3B82F6)
+                        )
+                        Text(
+                            point,
+                            fontSize = dimens.bodySize,
+                            color = androidx.compose.ui.graphics.Color(0xFF374151),
+                            lineHeight = 20.sp
+                        )
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
             // Section: Do Now
             if (topic.doNow.isNotEmpty()) {
-                Text(
-                    text = "Do This Now:",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = dimens.bodySize,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                topic.doNow.forEachIndexed { index, step ->
-                    Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                        Row(verticalAlignment = Alignment.Top) {
-                            Text(
-                                text = "${index + 1}. ",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = dimens.bodySize
-                            )
-                            Text(
-                                text = step.text,
-                                fontSize = dimens.bodySize,
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                        if (step.action.type != ActionType.NONE) {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            FilledTonalButton(
-                                onClick = { onActionTap(step.action) },
-                                modifier = Modifier
-                                    .padding(start = 20.dp)
-                                    .heightIn(min = dimens.minTouchTarget)
-                            ) {
-                                val buttonIcon = when (step.action.type) {
-                                    ActionType.DIAL -> Icons.Default.Phone
-                                    ActionType.OPEN_URL -> Icons.AutoMirrored.Filled.OpenInNew
-                                    ActionType.OPEN_CHECKER -> Icons.Default.CheckCircle
-                                    ActionType.OPEN_TOPIC -> Icons.AutoMirrored.Filled.ArrowForward
-                                    ActionType.COPY -> Icons.Default.ContentCopy
-                                    else -> Icons.Default.Info
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = androidx.compose.ui.graphics.Color(0xFFF0FDF4),
+                    border = BorderStroke(1.dp, androidx.compose.ui.graphics.Color(0xFF86EFAC))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text(
+                            text = "✓ Do This Now:",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = dimens.bodySize.times(1.05f),
+                            color = androidx.compose.ui.graphics.Color(0xFF15803D)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        topic.doNow.forEachIndexed { index, step ->
+                            Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                                Row(verticalAlignment = Alignment.Top) {
+                                    Text(
+                                        text = "${index + 1}. ",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = dimens.bodySize,
+                                        color = androidx.compose.ui.graphics.Color(0xFF15803D)
+                                    )
+                                    Text(
+                                        text = step.text,
+                                        fontSize = dimens.bodySize,
+                                        modifier = Modifier.weight(1f),
+                                        color = androidx.compose.ui.graphics.Color(0xFF166534),
+                                        lineHeight = 20.sp
+                                    )
                                 }
-                                Icon(buttonIcon, contentDescription = null, modifier = Modifier.size(16.dp))
-                                Spacer(modifier = Modifier.width(6.dp))
-                                val buttonLabel = when (step.action.type) {
-                                    ActionType.DIAL -> "Call ${step.action.value}"
-                                    ActionType.OPEN_CHECKER -> "Start Quick Check"
-                                    ActionType.OPEN_URL -> "Open Official Link"
-                                    ActionType.OPEN_TOPIC -> "View Guide"
-                                    ActionType.COPY -> "Copy Text"
-                                    else -> "Open"
+                                if (step.action.type != ActionType.NONE) {
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    FilledTonalButton(
+                                        onClick = { onActionTap(step.action) },
+                                        modifier = Modifier
+                                            .padding(start = 20.dp)
+                                            .heightIn(min = dimens.minTouchTarget),
+                                        colors = ButtonDefaults.filledTonalButtonColors(
+                                            containerColor = androidx.compose.ui.graphics.Color(0xFF22C55E),
+                                            contentColor = androidx.compose.ui.graphics.Color.White
+                                        )
+                                    ) {
+                                        val buttonIcon = when (step.action.type) {
+                                            ActionType.DIAL -> Icons.Default.Phone
+                                            ActionType.OPEN_URL -> Icons.AutoMirrored.Filled.OpenInNew
+                                            ActionType.OPEN_CHECKER -> Icons.Default.CheckCircle
+                                            ActionType.OPEN_TOPIC -> Icons.AutoMirrored.Filled.ArrowForward
+                                            ActionType.COPY -> Icons.Default.ContentCopy
+                                            else -> Icons.Default.Info
+                                        }
+                                        Icon(buttonIcon, contentDescription = null, modifier = Modifier.size(16.dp))
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        val buttonLabel = when (step.action.type) {
+                                            ActionType.DIAL -> "Call ${step.action.value}"
+                                            ActionType.OPEN_CHECKER -> "Start Quick Check"
+                                            ActionType.OPEN_URL -> "Open Official Link"
+                                            ActionType.OPEN_TOPIC -> "View Guide"
+                                            ActionType.COPY -> "Copy Text"
+                                            else -> "Open"
+                                        }
+                                        Text(buttonLabel, fontSize = dimens.bodySize, fontWeight = FontWeight.SemiBold)
+                                    }
                                 }
-                                Text(buttonLabel, fontSize = dimens.bodySize)
                             }
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
             // Section: Don't
             if (topic.dont.isNotEmpty()) {
-                Text(
-                    text = "What NOT to do:",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = dimens.bodySize,
-                    color = MaterialTheme.colorScheme.error
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                topic.dont.forEach { dontPoint ->
-                    Row(modifier = Modifier.padding(vertical = 2.dp)) {
-                        Text("✗ ", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
-                        Text(dontPoint, fontSize = dimens.bodySize)
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = androidx.compose.ui.graphics.Color(0xFFFEF2F2),
+                    border = BorderStroke(1.dp, androidx.compose.ui.graphics.Color(0xFFFECACA))
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text(
+                            text = "⚠ What NOT to do:",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = dimens.bodySize.times(1.05f),
+                            color = androidx.compose.ui.graphics.Color(0xFFDC2626)
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        topic.dont.forEach { dontPoint ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 3.dp)
+                            ) {
+                                Text(
+                                    "✗ ",
+                                    color = androidx.compose.ui.graphics.Color(0xFFDC2626),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = dimens.bodySize
+                                )
+                                Text(
+                                    dontPoint,
+                                    fontSize = dimens.bodySize,
+                                    color = androidx.compose.ui.graphics.Color(0xFF991B1B),
+                                    lineHeight = 20.sp
+                                )
+                            }
+                        }
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
             // Section: Official Contacts
             if (topic.contacts.isNotEmpty()) {
                 Text(
-                    text = "Official Helplines:",
+                    text = "📞 Official Helplines:",
                     fontWeight = FontWeight.Bold,
-                    fontSize = dimens.bodySize
+                    fontSize = dimens.bodySize,
+                    color = androidx.compose.ui.graphics.Color(0xFF111827)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                Spacer(modifier = Modifier.height(8.dp))
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     topic.contacts.forEach { contact ->
                         OutlinedButton(
@@ -226,41 +299,66 @@ fun ScriptCard(
                                 }
                                 onActionTap(action)
                             },
-                            modifier = Modifier.heightIn(min = dimens.minTouchTarget)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = dimens.minTouchTarget),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = androidx.compose.ui.graphics.Color(0xFF3B82F6)
+                            ),
+                            border = BorderStroke(1.5.dp, androidx.compose.ui.graphics.Color(0xFF3B82F6))
                         ) {
                             val icon = if (contact.type == ContactType.DIAL) Icons.Default.Call else Icons.Default.Link
-                            Icon(icon, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(contact.label, fontSize = dimens.subtextSize)
+                            Icon(icon, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                contact.label,
+                                fontSize = dimens.bodySize,
+                                fontWeight = FontWeight.SemiBold
+                            )
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
             // Follow-up Chips
             if (topic.followUpChips.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(12.dp))
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 12.dp),
+                    color = androidx.compose.ui.graphics.Color(0xFFE5E7EB)
+                )
                 Text(
                     text = "Related questions:",
                     fontSize = dimens.subtextSize,
-                    color = MaterialTheme.colorScheme.outline
+                    color = androidx.compose.ui.graphics.Color(0xFF6B7280),
+                    fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
                 ) {
-                    topic.followUpChips.forEach { chip ->
+                    topic.followUpChips.take(2).forEach { chip ->
                         SuggestionChip(
                             onClick = { onFollowUpTap(chip) },
-                            label = { Text(chip.label, fontSize = dimens.subtextSize) }
+                            label = {
+                                Text(
+                                    chip.label,
+                                    fontSize = dimens.subtextSize,
+                                    color = androidx.compose.ui.graphics.Color(0xFF374151)
+                                )
+                            },
+                            border = BorderStroke(1.dp, androidx.compose.ui.graphics.Color(0xFFD1D5DB))
                         )
                     }
                 }
             }
 
             // Bottom row: Feedback
-            Spacer(modifier = Modifier.height(8.dp))
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 12.dp),
+                color = androidx.compose.ui.graphics.Color(0xFFE5E7EB)
+            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
@@ -269,22 +367,30 @@ fun ScriptCard(
                 Text(
                     text = "Was this helpful?",
                     fontSize = dimens.subtextSize,
-                    color = MaterialTheme.colorScheme.outline
+                    color = androidx.compose.ui.graphics.Color(0xFF6B7280),
+                    fontWeight = FontWeight.Medium
                 )
+                Spacer(modifier = Modifier.width(4.dp))
                 IconButton(onClick = onFeedbackUp) {
                     Icon(
                         imageVector = if (feedback == FeedbackStatus.UP) Icons.Default.ThumbUp else Icons.Default.ThumbUpOffAlt,
                         contentDescription = "Helpful",
-                        tint = if (feedback == FeedbackStatus.UP) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                        modifier = Modifier.size(18.dp)
+                        tint = if (feedback == FeedbackStatus.UP)
+                            androidx.compose.ui.graphics.Color(0xFF22C55E)
+                        else
+                            androidx.compose.ui.graphics.Color(0xFF9CA3AF),
+                        modifier = Modifier.size(20.dp)
                     )
                 }
                 IconButton(onClick = onFeedbackDown) {
                     Icon(
                         imageVector = if (feedback == FeedbackStatus.DOWN) Icons.Default.ThumbDown else Icons.Default.ThumbDownOffAlt,
                         contentDescription = "Not helpful",
-                        tint = if (feedback == FeedbackStatus.DOWN) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
-                        modifier = Modifier.size(18.dp)
+                        tint = if (feedback == FeedbackStatus.DOWN)
+                            androidx.compose.ui.graphics.Color(0xFFEF4444)
+                        else
+                            androidx.compose.ui.graphics.Color(0xFF9CA3AF),
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }

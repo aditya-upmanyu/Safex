@@ -1,0 +1,678 @@
+SafeX – Complete App Redesign, Development, Feature Fixes & Professional UI/UX Master Prompt
+ROLE & OBJECTIVE
+
+Act as a senior mobile application developer, professional UI/UX designer, software architect, and product engineer.
+
+Thoroughly inspect, improve, and upgrade my existing SafeX Personal Safety Application.
+
+I do not want just a new design, mockup, or static prototype. I want you to work directly on my existing application and fix its actual functionality, frontend, backend, navigation, permissions, responsiveness, and user experience.
+
+Transform SafeX into a polished, reliable, production-ready personal safety application.
+
+Important priorities:
+
+Fix the QR code and URL scanner camera issue.
+Implement simple login and first-time onboarding.
+Create a secure personal safety profile.
+Implement location access and nearby police station functionality.
+Improve the entire dashboard and navigation.
+Redesign every screen using a clean, premium white UI.
+Fix all existing UI/UX and functional issues.
+Test the complete application.
+
+Preserve existing working features and project architecture wherever possible.
+
+1. QR CODE & URL SCANNER – HIGH PRIORITY
+
+Currently, the QR/URL scanner does not show any visible option to open the camera.
+
+Fix this issue completely.
+
+Scanner functionality
+Add a clearly visible "Scan QR Code" button.
+Add an "Open Camera" button with a camera icon.
+Open the camera when the user taps the scanner.
+Request camera permission properly.
+Display a clear explanation before requesting permission.
+If permission is denied, show instructions to enable it in device settings.
+If permission is permanently denied, provide an appropriate settings shortcut.
+Display a working camera preview.
+Add a properly aligned QR scanning frame.
+Add a flashlight/torch toggle.
+Support QR code detection and URL recognition.
+Display scanned content clearly.
+Show a security warning before opening external URLs.
+Allow users to cancel or proceed.
+Add manual URL input.
+Add a gallery option to scan QR codes from existing images.
+Add proper loading, success, invalid QR, and error states.
+Prevent duplicate scanning and accidental repeated actions.
+Scanner UI
+
+Keep the scanner interface clean and minimal.
+
+White background.
+Clear heading.
+Visible camera preview.
+Proper scanning frame.
+Clearly positioned camera and flashlight controls.
+Manual entry and gallery options below the preview.
+Easy-to-understand instructions.
+
+Important: Do not leave the scanner as a static screen or placeholder. Implement actual camera functionality using the appropriate camera and QR-scanning libraries for the existing technology stack. Test on a real Android device.
+
+2. LOGIN, SIGNUP & FIRST-TIME ONBOARDING
+
+When a user opens SafeX for the first time, display a professional and simple onboarding experience.
+
+Authentication screen
+
+Create a clean login and registration interface containing:
+
+Full name.
+Email address.
+Mobile number.
+Password or secure authentication option.
+Login for existing users.
+Signup for new users.
+Forgot password functionality.
+
+Use secure authentication and proper input validation.
+
+Onboarding flow
+
+After successful registration:
+
+Welcome screen.
+Personal details.
+Age category selection.
+Emergency contact setup.
+Location permission explanation.
+Camera permission explanation when needed.
+Main dashboard.
+
+Do not request every permission immediately without explanation. Request permissions contextually when users first need the corresponding feature.
+
+Allow users to skip optional setup steps and complete them later.
+
+3. USER DETAILS & PERSONAL SAFETY PROFILE
+
+Create a secure personal safety profile.
+
+Collect the following information:
+Full name.
+Email ID.
+Mobile number.
+Father's or guardian's contact number.
+Emergency contact details.
+Son's contact number, if applicable.
+User category.
+User category options
+Child.
+Adult.
+Senior citizen.
+
+Use clear, respectful wording.
+
+Ask for date of birth or age only when necessary to determine the appropriate category.
+
+For children:
+
+Require appropriate parent or guardian involvement.
+Obtain legally required parental consent.
+Allow guardians to manage relevant safety settings.
+Do not treat children as independent account holders where applicable law requires guardian consent.
+Emergency contacts
+
+Allow users to add multiple trusted contacts.
+
+Each contact should have:
+
+Name.
+Relationship.
+Phone number.
+Optional email address.
+Primary emergency contact designation.
+
+Allow users to edit, remove, and reorder contacts.
+
+Keep personal information private and securely stored. Apply appropriate access controls, encryption, and data minimization.
+
+4. LOCATION PERMISSION & NEARBY POLICE STATION
+
+After profile setup, introduce location functionality with a clear explanation.
+
+Explain that location access helps users find nearby police stations and share their location during emergencies.
+
+Features
+Request location permission.
+Show the user's current location.
+Display nearby police stations.
+Identify the nearest police station.
+Show station name.
+Show verified address.
+Show verified contact number when available.
+Show distance when accurately calculated.
+Add a "Get Directions" button.
+Open navigation in Google Maps or the user's preferred maps application.
+Allow manual location selection if GPS is unavailable.
+Provide permission management instructions.
+Important requirements
+Never display fake police station information.
+Use reliable location and mapping data.
+Clearly distinguish verified information from unavailable information.
+Handle GPS errors and denied permissions gracefully.
+Do not continuously track users without a clear purpose and appropriate consent.
+5. MAIN DASHBOARD – SAFEX HOME
+
+After completing onboarding, open the main SafeX dashboard.
+
+Create a clean, organized, easy-to-understand home screen.
+
+Dashboard header
+SafeX logo.
+Greeting with the user's name.
+Profile icon.
+Current location status.
+Main emergency section
+Prominent SOS Emergency button.
+Short description explaining its function.
+Emergency contact availability.
+Location-sharing status.
+Safety tools
+
+Provide easy access to:
+
+QR Code Scanner.
+URL Scanner.
+Nearby Police Stations.
+Live Location Sharing.
+Emergency Contacts.
+My Safety Profile.
+Settings.
+
+Use a clean grid or organized list.
+
+Do not hide important emergency actions inside menus or carousels.
+
+Additional dashboard sections
+Nearest police station.
+Emergency contact summary.
+Safety tips.
+Recent scanner activity, if applicable.
+
+Keep the dashboard useful without overcrowding it.
+
+6. SOS EMERGENCY SYSTEM
+
+Implement a reliable and accessible SOS experience.
+
+Features
+Large and clearly visible SOS action.
+Emergency contact notification.
+Location-sharing functionality.
+Clear emergency status.
+Appropriate confirmation and accidental-trigger protection.
+Clear cancellation interaction.
+Feedback when an emergency action succeeds or fails.
+
+Avoid unnecessary delays during genuine emergencies.
+
+Clearly explain what will happen before activation.
+
+Do not claim that an emergency alert was delivered unless the backend confirms successful delivery.
+
+Do not automatically contact police or emergency services without the appropriate configured integration and user authorization.
+
+7. COMPLETE PROFESSIONAL UI/UX REDESIGN
+
+Inspect every screen, component, and navigation flow in the existing application.
+
+Fix all existing design and usability problems.
+
+Problems to identify and resolve
+Invisible or low-contrast text.
+Text overlapping icons.
+Buttons that are too small.
+Inconsistent typography.
+Incorrect spacing.
+Poor alignment.
+Content overflowing screens.
+Missing labels.
+Broken navigation.
+Unresponsive buttons.
+Poor color combinations.
+Inconsistent card layouts.
+Confusing forms.
+Poor carousel behavior.
+Unclear permission screens.
+Missing loading states.
+Missing empty states.
+Missing error messages.
+Inconsistent headers and footers.
+
+Ensure every screen is responsive across different Android devices.
+
+7.1 Overall design direction
+
+Use a clean, white-first, minimal and premium design language.
+
+Design inspiration:
+
+Apple-level simplicity.
+Professional banking applications.
+Modern productivity applications.
+Well-designed personal safety products.
+
+The app should feel:
+
+Professional.
+Trustworthy.
+Modern.
+Minimal.
+Reliable.
+Accessible.
+Easy to navigate.
+
+Avoid the typical AI-generated or vibe-coded appearance.
+
+Do not use:
+
+Excessive gradients.
+Neon colors.
+Glassmorphism everywhere.
+Unnecessary decorative illustrations.
+Random shadows.
+Excessive rounded cards.
+Oversized headings.
+Randomly colored icons.
+Emoji-based interface icons.
+Too many floating buttons.
+Unnecessary animations.
+
+Every element must have a clear purpose.
+
+7.2 Color system
+
+Use these consistent design tokens throughout the application.
+
+Element	Color
+Main background	#FFFFFF
+Secondary background	#F7F8FA
+Primary text	#172033
+Secondary text	#697386
+Primary brand blue	#2457D6
+Light blue	#EDF3FF
+Border	#E8EBF0
+Emergency red	#E53945
+Success green	#218653
+
+Design rules:
+
+Keep approximately 85–90% of the interface white or neutral.
+Use blue for important actions and brand identity.
+Use red only for emergency-related actions and warnings.
+Use green for successful states.
+Maintain accessible contrast.
+Never use light grey text on a white background when it becomes difficult to read.
+7.3 Background design
+
+Improve backgrounds across all screens.
+
+Use pure white for primary screens.
+Use very light grey for secondary sections.
+Use subtle separators.
+Avoid colorful full-screen gradients.
+Avoid unnecessary background illustrations.
+Do not place every element inside a card.
+Use spacing and typography to establish visual hierarchy.
+7.4 Typography
+
+Use Inter, SF Pro, or the platform's native system font.
+
+Maintain a consistent typography scale:
+
+Main screen title: 24–28px, semibold.
+Section headings: 17–19px, semibold.
+Card headings: 15–16px, medium.
+Body text: 14–16px, regular.
+Supporting labels: 12–13px.
+Button text: 15–16px, semibold.
+
+Ensure:
+
+Proper line height.
+Consistent font weights.
+Clear hierarchy.
+No clipped text.
+No overlapping text.
+Readability at different font scaling settings.
+7.5 Button design system
+
+Create reusable and consistent button components.
+
+Primary button
+
+Blue background.
+White text.
+Height approximately 48–52px.
+12px corner radius.
+Semibold text.
+
+Secondary button
+
+White background.
+Light grey border.
+Dark text.
+Same height as primary buttons.
+
+Text button
+
+No background.
+Blue text.
+Used for secondary actions.
+
+Destructive button
+
+Red background or red text depending on importance.
+
+Icon button
+
+Consistent icon sizing.
+Accessible touch targets.
+Clear labels where needed.
+
+Every button must have:
+
+Default state.
+Pressed state.
+Disabled state.
+Loading state when appropriate.
+
+Never use inconsistent button styles across screens.
+
+7.6 Cards and containers
+
+Use cards only when they help group related content.
+
+Card design:
+
+White background.
+Subtle #E8EBF0 border.
+12–16px corner radius.
+Minimal or no shadow.
+Approximately 16px internal padding.
+Consistent spacing.
+
+Avoid placing every individual component inside a separate card.
+
+Use open layouts and subtle dividers where possible.
+
+7.7 Dashboard layout
+
+Organize the dashboard into clear sections.
+
+Header and profile.
+Emergency SOS section.
+Safety tools.
+Nearby police station.
+Emergency contacts.
+Safety tips.
+
+Use a consistent two-column grid for suitable quick actions.
+
+Keep important actions immediately accessible.
+
+7.8 Carousel design
+
+Improve all existing carousels.
+
+For safety tips and informational content:
+
+Clean white cards.
+Consistent card widths.
+Subtle borders.
+Short titles and descriptions.
+Small illustrations only when useful.
+Clear pagination indicators.
+Smooth swipe gestures.
+No clipped content.
+No unnecessary auto-sliding.
+
+Do not put SOS, police assistance, or other critical safety actions inside carousels.
+
+7.9 Selection options and forms
+
+Improve all selection controls.
+
+For Child, Adult, and Senior Citizen selection:
+
+Use simple selectable cards or segmented controls.
+Clearly show the selected state.
+Use subtle blue backgrounds.
+Use a blue border for selection.
+Include short descriptions if useful.
+
+For forms:
+
+Place labels above fields.
+Maintain consistent field heights.
+Use proper spacing.
+Show visible focus states.
+Display understandable validation errors.
+Use appropriate email and phone keyboards.
+Add show/hide password functionality.
+Do not rely on placeholders as the only field labels.
+7.10 Navigation
+
+Create a consistent bottom navigation bar.
+
+Suggested tabs:
+
+Home.
+Scanner.
+Nearby.
+Profile.
+
+Design:
+
+White background.
+Subtle top border.
+Consistent icons.
+Short labels.
+Clearly visible active state.
+Proper safe-area spacing.
+
+Use standard back navigation on secondary screens.
+
+Never make users feel lost or trapped.
+
+7.11 Microinteractions
+
+Use subtle, purposeful animations.
+
+Examples:
+
+Smooth screen transitions.
+Button press feedback.
+Selection state transitions.
+Small loading indicators.
+Gentle carousel movement.
+Success and error feedback.
+
+Keep animations lightweight and fast.
+
+Do not compromise responsiveness.
+
+8. SAFEX APP ICON, LOGO & SPLASH SCREEN
+
+Create a recognizable and professional SafeX brand identity.
+
+App icon concept
+Circular dark navy blue visual foundation.
+Clear SafeX wordmark.
+Modern shield symbol.
+Subtle checkmark or safety element.
+White and blue color combination.
+Minimal and recognizable design.
+
+The icon must remain readable at small sizes.
+
+Provide:
+
+Android launcher icon.
+Adaptive icon assets.
+Splash screen.
+Matching in-app logo.
+Consistent branding across the application.
+
+Avoid excessive detail.
+
+9. SETTINGS & ACCESSIBILITY
+
+Create a clean settings screen containing:
+
+Edit profile.
+Manage emergency contacts.
+Location permission settings.
+Camera permission settings.
+Privacy policy.
+Terms and conditions.
+Accessibility settings.
+Text scaling.
+Logout.
+Delete account.
+
+Use clearly grouped sections and simple list-based navigation.
+
+Provide proper confirmation for sensitive account actions.
+
+10. PRIVACY, SECURITY & DATA MANAGEMENT
+
+Treat user safety information as sensitive personal data.
+
+Implement:
+
+Secure authentication.
+Encrypted communication.
+Appropriate protection of stored personal information.
+Proper authorization checks.
+Secure session handling.
+Minimal data collection.
+Permission-based access to location and camera.
+Secure emergency contact storage.
+Account deletion and data deletion procedures.
+Clear privacy disclosures.
+
+Never expose user information to unauthorized users.
+
+Do not collect or retain continuous location history unnecessarily.
+
+11. FUNCTIONALITY & FINAL TESTING
+
+Perform a complete audit of the frontend, backend, and application behavior.
+
+Scanner testing
+Camera permission.
+Camera preview.
+QR scanning.
+URL recognition.
+Flashlight.
+Gallery scanning.
+Manual URL entry.
+External URL security warning.
+Error handling.
+Authentication testing
+Signup.
+Login.
+Logout.
+Password recovery.
+Form validation.
+Secure session handling.
+Profile testing
+User details saved correctly.
+Age category selection.
+Guardian details.
+Multiple emergency contacts.
+Profile editing.
+Location testing
+Location permissions.
+GPS functionality.
+Nearby police station discovery.
+Verified contact information.
+Directions.
+Manual location selection.
+UI/UX testing
+All buttons work.
+No invisible text.
+No overlapping components.
+No broken navigation.
+No horizontal overflow.
+Proper scrolling.
+Proper keyboard behavior.
+Responsive layouts.
+Accessible controls.
+Consistent design across screens.
+
+Test on real Android devices and different screen sizes.
+
+Do not claim a feature works unless it has actually been tested.
+
+12. DEVELOPMENT & IMPLEMENTATION RULES
+
+Before modifying the application:
+
+Inspect the complete existing project.
+Identify the current framework, dependencies, architecture, and backend.
+Identify existing bugs and broken functionality.
+Understand the existing navigation and data structure.
+Preserve working functionality.
+Reuse existing components where appropriate.
+Build reusable design-system components.
+Implement missing functionality using appropriate libraries.
+Fix actual root causes instead of applying temporary visual workarounds.
+Test the complete application after changes.
+
+Do not unnecessarily replace the existing framework or backend.
+
+Do not introduce duplicate features or redundant dependencies.
+
+Do not leave placeholder buttons, fake data, or non-functional interactions.
+
+If a backend integration or external service is required, implement it properly or clearly identify what configuration is still needed.
+
+FINAL EXPECTATION
+
+I want SafeX to become a genuinely professional, production-ready personal safety application.
+
+The final product must have:
+
+Fully working QR and URL scanning.
+Proper camera integration.
+Simple and secure authentication.
+Personal safety profiles.
+Child, adult, and senior citizen categories.
+Emergency contact management.
+Location access.
+Nearby police station discovery.
+SOS emergency functionality.
+Professional navigation.
+Complete privacy and security measures.
+A beautiful, minimal white UI.
+Consistent buttons, backgrounds, forms, cards, carousels, and icons.
+Responsive layouts.
+Accessible typography and controls.
+
+DESIGN PRIORITY:
+
+The interface must be predominantly white, clean, minimal, elegant, readable, and professional.
+
+It should look like a real commercial safety application designed by an experienced product team, NOT a generic AI-generated template, student project, or vibe-coded prototype.
+
+IMPLEMENTATION PRIORITY:
+
+First fix the missing camera option in the QR/URL scanner. Then implement onboarding, authentication, safety profiles, emergency contacts, and location features. Finally, complete the entire UI/UX redesign and test every feature.
+
+Make the changes directly in my existing project.
+
+Do not just explain what needs to be done. Actually implement the changes, verify the functionality, and provide a concise summary of what was fixed, what was added, and what still requires external configuration.
