@@ -75,12 +75,29 @@ fun FamilyGuardianScreen(
             item {
                 Surface(shape = RoundedCornerShape(16.dp), color = Color(0xFF1A2A3A)) {
                     Column(modifier = Modifier.padding(14.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Icon(Icons.Default.FamilyRestroom, null,
-                                tint = Color(0xFF4CAF50), modifier = Modifier.size(24.dp))
-                            Text("Family SOS Contacts", color = Color.White,
-                                fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.FamilyRestroom, null,
+                                tint = Color(0xFF4CAF50), modifier = Modifier.size(24.dp)
+                            )
+                            Column {
+                                Text(
+                                    "Family SOS Contacts", 
+                                    color = Color.White,
+                                    fontSize = 15.sp, 
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    "ENABLED",
+                                    color = Color.White,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(top = 2.dp)
+                                )
+                            }
                         }
                         Spacer(Modifier.height(6.dp))
                         Text(

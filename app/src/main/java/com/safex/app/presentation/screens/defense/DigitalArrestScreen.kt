@@ -54,12 +54,29 @@ fun DigitalArrestScreen(
             // Info
             Surface(shape = RoundedCornerShape(16.dp), color = Color(0xFF1A2A3A)) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Icon(Icons.Default.Gavel, null,
-                            tint = Color(0xFFE91E63), modifier = Modifier.size(28.dp))
-                        Text("Digital Arrest Detection", color = Color.White,
-                            fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Gavel, null,
+                            tint = Color(0xFFE91E63), modifier = Modifier.size(28.dp)
+                        )
+                        Column {
+                            Text(
+                                "Digital Arrest Detection", 
+                                color = Color.White,
+                                fontSize = 16.sp, 
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                "ENABLED",
+                                color = Color.White,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(top = 2.dp)
+                            )
+                        }
                     }
                     Spacer(Modifier.height(8.dp))
                     Text(
