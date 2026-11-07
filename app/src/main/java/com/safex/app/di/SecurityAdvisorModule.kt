@@ -40,12 +40,6 @@ object SecurityAdvisorModule {
     
     @Provides
     @Singleton
-    fun provideGson(): Gson {
-        return Gson()
-    }
-    
-    @Provides
-    @Singleton
     fun provideSecurityAdvisorRepository(
         @ApplicationContext context: Context,
         checkManager: SecurityCheckManager,

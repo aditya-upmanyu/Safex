@@ -18,7 +18,7 @@ class SecurityRiskScorer {
     
     companion object {
         // Critical risk cap: if any verified critical risk, max grade is D
-        private const val CRITICAL_CAP_GRADE = SecurityScore.Grade.D
+        private val CRITICAL_CAP_GRADE = SecurityScore.Grade.D
         
         // Coverage thresholds for grade capping
         private const val COVERAGE_GRADE_C_MAX = 0.5f

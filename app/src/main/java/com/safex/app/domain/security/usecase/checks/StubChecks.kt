@@ -73,7 +73,7 @@ class WiFiProxyCheck : BaseSecurityCheck() {
     override val weight = 0.5f
     override val expectedSecureValue = false
     
-    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().execute(context).copy(
         id = id, title = title, userExplanation = "Proxy status requires additional permissions"
     )
 }
@@ -87,7 +87,7 @@ class VPNCheck : BaseSecurityCheck() {
     override val weight = 0.6f
     override val expectedSecureValue = false
     
-    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().execute(context).copy(
         id = id, title = title, userExplanation = "VPN status is informational"
     )
 }
@@ -101,7 +101,7 @@ class HotspotCheck : BaseSecurityCheck() {
     override val weight = 0.4f
     override val expectedSecureValue = false
     
-    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().execute(context).copy(
         id = id, title = title, userExplanation = "Hotspot status not accessible"
     )
 }
@@ -115,7 +115,7 @@ class TheftProtectionCheck : BaseSecurityCheck() {
     override val weight = 1.0f
     override val expectedSecureValue = true
     
-    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().execute(context).copy(
         id = id, title = title, userExplanation = "Check Find My Device in Google Settings"
     )
 }
@@ -129,7 +129,7 @@ class LockScreenStrengthCheck : BaseSecurityCheck() {
     override val weight = 0.8f
     override val expectedSecureValue = true
     
-    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().execute(context).copy(
         id = id, title = title, userExplanation = "Use 6+ digit PIN or strong password"
     )
 }
@@ -143,7 +143,7 @@ class LockScreenNotificationsCheck : BaseSecurityCheck() {
     override val weight = 0.5f
     override val expectedSecureValue = false
     
-    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().execute(context).copy(
         id = id, title = title, userExplanation = "Hide sensitive content on lock screen"
     )
 }
@@ -188,7 +188,7 @@ class NFCCheck : BaseSecurityCheck() {
     override val weight = 0.3f
     override val expectedSecureValue = false
     
-    override suspend fun performCheck(context: Context) = BluetoothCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = BluetoothCheck().execute(context).copy(
         id = id, title = title, userExplanation = "NFC status"
     )
 }
@@ -271,7 +271,7 @@ class PlayProtectCheck : BaseSecurityCheck() {
     override val weight = 1.0f
     override val expectedSecureValue = true
     
-    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().performCheck(context).copy(
+    override suspend fun performCheck(context: Context) = WiFiSecurityCheck().execute(context).copy(
         id = id, title = title, userExplanation = "Check Play Protect in Play Store"
     )
 }
