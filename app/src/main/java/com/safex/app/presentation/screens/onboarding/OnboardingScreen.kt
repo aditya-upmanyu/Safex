@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -103,7 +104,7 @@ fun OnboardingScreen(
                             onNavigateNext()
                         }
                     ) {
-                        Text("Skip", color = MutedSlate, fontSize = 15.sp)
+                        Text("Skip", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                     }
 
                     Button(
@@ -116,7 +117,11 @@ fun OnboardingScreen(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = ShieldBlue)
                     ) {
-                        Text(stringResource(R.string.onboarding_next), fontWeight = FontWeight.SemiBold)
+                        Text(
+                            stringResource(R.string.onboarding_next), 
+                            color = Color.White,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
                 } else {
                     Button(
@@ -132,6 +137,7 @@ fun OnboardingScreen(
                     ) {
                         Text(
                             stringResource(R.string.onboarding_get_started),
+                            color = Color.White,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )

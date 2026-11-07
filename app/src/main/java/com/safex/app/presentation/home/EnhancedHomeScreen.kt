@@ -294,19 +294,21 @@ private fun HeroSecurityCard(
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isActive) ShieldBlue else AlertCrimson,
-                    contentColor = SurfaceWhite
+                    contentColor = Color.White
                 )
             ) {
                 Icon(
                     imageVector = if (isActive) Icons.Default.Shield else Icons.Default.ShieldMoon,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(18.dp),
+                    tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = if (isActive) "Active — Tap to Pause" else "Tap to Enable",
                     fontSize = 13.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White
                 )
             }
         }

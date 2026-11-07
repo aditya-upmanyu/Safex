@@ -163,7 +163,26 @@ private fun ModuleCard(
             ) { Icon(icon, null, tint = levelColor, modifier = Modifier.size(24.dp)) }
             Column(modifier = Modifier.weight(1f)) {
                 Text(title, color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
-                Text(subtitle, color = Color.White.copy(alpha = 0.6f), fontSize = 12.sp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(subtitle, color = Color.White.copy(alpha = 0.6f), fontSize = 12.sp)
+                    // White ENABLED badge
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(Color.White.copy(alpha = 0.15f))
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            "ENABLED",
+                            color = Color.White,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
             Column(horizontalAlignment = Alignment.End) {
                 Surface(shape = RoundedCornerShape(8.dp), color = levelColor.copy(alpha = 0.2f)) {
