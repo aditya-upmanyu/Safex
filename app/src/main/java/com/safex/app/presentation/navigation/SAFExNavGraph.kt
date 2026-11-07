@@ -26,6 +26,7 @@ import com.safex.app.presentation.screens.history.HistoryScreen
 import com.safex.app.presentation.screens.onboarding.OnboardingScreen
 import com.safex.app.presentation.screens.reportfraud.ReportFraudScreen
 import com.safex.app.presentation.screens.settings.SettingsScreen
+import com.safex.app.presentation.screens.settings.PrivacyPolicyScreen
 import com.safex.app.presentation.screens.urlscanner.UrlScannerScreen
 import com.safex.app.presentation.voiceanalysis.VoiceAnalysisScreen
 
@@ -138,6 +139,13 @@ fun SAFExNavGraph(
 
         composable(Screen.Settings.route) {
             SettingsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToPrivacyPolicy = { navController.navigate(Screen.PrivacyPolicy.route) }
+            )
+        }
+
+        composable(Screen.PrivacyPolicy.route) {
+            PrivacyPolicyScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

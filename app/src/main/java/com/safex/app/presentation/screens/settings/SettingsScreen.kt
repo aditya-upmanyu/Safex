@@ -13,6 +13,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.SupportAgent
 import androidx.compose.material3.*
@@ -32,6 +33,7 @@ import com.safex.app.presentation.theme.*
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val themeMode by viewModel.themeMode.collectAsState()
@@ -256,6 +258,13 @@ fun SettingsScreen(
 
             SettingsGroupCard {
                 Column {
+                    SettingsClickableItem(
+                        icon = Icons.Default.PrivacyTip,
+                        title = "Privacy Policy",
+                        subtitle = "How we protect your data",
+                        onClick = onNavigateToPrivacyPolicy
+                    )
+                    HorizontalDivider(color = BorderSubtle, thickness = 1.dp, modifier = Modifier.padding(horizontal = 18.dp))
                     SettingsInfoRow(
                         icon = Icons.Default.Info,
                         title = stringResource(R.string.settings_version),
