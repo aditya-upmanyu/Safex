@@ -2,12 +2,15 @@ package com.safex.app.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
 import com.safex.app.data.local.AppDatabase
 import com.safex.app.data.local.dao.AlertDao
+import com.safex.app.data.local.dao.AppSentryDao
 import com.safex.app.data.local.dao.CallRecordDao
+import com.safex.app.data.local.dao.ChatDao
+import com.safex.app.data.local.dao.GuardianDao
 import com.safex.app.data.local.dao.ScanHistoryDao
+import com.safex.app.data.local.dao.SecurityIncidentDao
 import com.safex.app.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -75,13 +78,25 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideChatDao(database: AppDatabase): com.safex.app.data.local.dao.ChatDao {
+    fun provideChatDao(database: AppDatabase): ChatDao {
         return database.chatDao()
     }
 
     @Provides
     @Singleton
-    fun provideAppSentryDao(database: AppDatabase): com.safex.app.data.local.dao.AppSentryDao {
+    fun provideAppSentryDao(database: AppDatabase): AppSentryDao {
         return database.appSentryDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGuardianDao(database: AppDatabase): GuardianDao {
+        return database.guardianDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSecurityIncidentDao(database: AppDatabase): SecurityIncidentDao {
+        return database.securityIncidentDao()
     }
 }

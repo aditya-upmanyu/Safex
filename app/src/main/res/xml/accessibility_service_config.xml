@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    SafeX Accessibility Service Configuration
+    Monitors foreground app changes for:
+    - Call UI detection (original behavior)
+    - UPI app foreground detection (Module 1: UPI Shield)
+    - Remote access app foreground detection (Module 2: RAT Sentry)
+
+    Does NOT read screen content or collect credentials.
+    Only uses TYPE_WINDOW_STATE_CHANGED for package-level foreground detection.
+    Throttling is applied in code — not every event is processed.
+-->
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowsChanged|typeWindowContentChanged"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowsChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:accessibilityFlags="flagReportViewIds|flagRetrieveInteractiveWindows"
-    android:canRetrieveWindowContent="true"
+    android:canRetrieveWindowContent="false"
     android:description="@string/accessibility_service_description"
-    android:notificationTimeout="100"
-    android:packageNames="com.android.incallui,com.whatsapp,com.skype.raider,com.google.android.dialer" />
+    android:notificationTimeout="500"
+    android:packageNames="com.android.incallui,com.google.android.dialer,com.samsung.android.incallui,com.oneplus.dialer,com.whatsapp,com.skype.raider,com.google.android.apps.nbu.paisa.user,com.phonepe.app,net.one97.paytm,in.org.npci.upiapp,com.dreamplug.androidapp,com.sbi.lotusintouch,com.csam.icici.bank.imobile,com.anydesk.anydeskandroid,com.teamviewer.quicksupport.market,com.teamviewer.teamviewer,com.carriez.rustdesk,com.splashtop.remote,com.zoho.assist" />

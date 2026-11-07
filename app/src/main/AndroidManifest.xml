@@ -47,6 +47,21 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <!-- UPI apps visibility for UPI Shield -->
+        <package android:name="com.google.android.apps.nbu.paisa.user" />
+        <package android:name="com.phonepe.app" />
+        <package android:name="net.one97.paytm" />
+        <package android:name="in.org.npci.upiapp" />
+        <package android:name="com.dreamplug.androidapp" />
+        <package android:name="com.sbi.lotusintouch" />
+        <package android:name="com.csam.icici.bank.imobile" />
+        <!-- Remote access apps visibility for RAT Sentry -->
+        <package android:name="com.anydesk.anydeskandroid" />
+        <package android:name="com.teamviewer.quicksupport.market" />
+        <package android:name="com.teamviewer.teamviewer" />
+        <package android:name="com.carriez.rustdesk" />
+        <package android:name="com.splashtop.remote" />
+        <package android:name="com.zoho.assist" />
     </queries>
 
     <application

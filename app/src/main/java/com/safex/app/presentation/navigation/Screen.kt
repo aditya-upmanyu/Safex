@@ -20,4 +20,9 @@ sealed class Screen(val route: String) {
     data object AppSentry : Screen("app_sentry")
     data object PrivacyPolicy : Screen("privacy_policy")
     data object SecurityAdvisor : Screen("security_advisor")
+    data object CoreDefense : Screen("core_defense")
+    data object UpiProtection : Screen("upi_protection")
+    data object RemoteAccess : Screen("remote_access")
+    data object DigitalArrest : Screen("digital_arrest")
+    data object FamilyGuardian : Screen("family_guardian")
 }

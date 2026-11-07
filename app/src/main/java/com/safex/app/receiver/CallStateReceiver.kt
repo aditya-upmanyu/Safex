@@ -5,47 +5,38 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
 import android.util.Log
+import com.safex.app.core.telephony.TelephonyCallStateManager
 import com.safex.app.service.CallRecorderService
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-/**
- * Detects incoming calls via TelephonyManager
- * More reliable than accessibility service for call detection
- */
 @AndroidEntryPoint
 class CallStateReceiver : BroadcastReceiver() {
+
+    @Inject lateinit var callStateManager: TelephonyCallStateManager
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent == null) return
 
-        val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
-        val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) ?: "Unknown"
+        val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE) ?: return
+        val incomingNumber = "hidden" // EXTRA_INCOMING_NUMBER deprecated; do not log
 
-        Log.d("CallStateReceiver", "Call state: $state, Number: $incomingNumber")
+        Log.d("CallStateReceiver", "Call state: $state")
+
+        // Update the centralised call state manager used by ThreatCorrelationEngine
+        callStateManager.updateFromBroadcast(state)
 
         when (state) {
-            TelephonyManager.EXTRA_STATE_RINGING -> {
-                // Incoming call ringing
-                Log.d("CallStateReceiver", "📞 Incoming call from: $incomingNumber")
-                startCallRecording(context, incomingNumber)
-            }
-            TelephonyManager.EXTRA_STATE_OFFHOOK -> {
-                // Call is being answered
-                Log.d("CallStateReceiver", "☎️ Call picked up")
-            }
-            TelephonyManager.EXTRA_STATE_IDLE -> {
-                // Call ended
-                Log.d("CallStateReceiver", "📴 Call ended")
-                stopCallRecording(context)
-            }
+            TelephonyManager.EXTRA_STATE_RINGING,
+            TelephonyManager.EXTRA_STATE_OFFHOOK -> startCallRecording(context)
+            TelephonyManager.EXTRA_STATE_IDLE -> stopCallRecording(context)
         }
     }
 
-    private fun startCallRecording(context: Context, phoneNumber: String) {
+    private fun startCallRecording(context: Context) {
         try {
             val intent = Intent(context, CallRecorderService::class.java).apply {
                 action = "START_RECORDING"
-                putExtra("PHONE_NUMBER", phoneNumber)
                 putExtra("CALL_START_TIME", System.currentTimeMillis())
             }
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -53,7 +44,6 @@ class CallStateReceiver : BroadcastReceiver() {
             } else {
                 context.startService(intent)
             }
-            Log.d("CallStateReceiver", "✅ Call recording started for: $phoneNumber")
         } catch (e: Exception) {
             Log.e("CallStateReceiver", "Failed to start recording", e)
         }
@@ -61,11 +51,11 @@ class CallStateReceiver : BroadcastReceiver() {
 
     private fun stopCallRecording(context: Context) {
         try {
-            val intent = Intent(context, CallRecorderService::class.java).apply {
-                action = "STOP_RECORDING"
-            }
-            context.startService(intent)
-            Log.d("CallStateReceiver", "✅ Call recording stopped")
+            context.startService(
+                Intent(context, CallRecorderService::class.java).apply {
+                    action = "STOP_RECORDING"
+                }
+            )
         } catch (e: Exception) {
             Log.e("CallStateReceiver", "Failed to stop recording", e)
         }

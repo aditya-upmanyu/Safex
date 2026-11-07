@@ -21,12 +21,17 @@ import com.safex.app.presentation.dashboard.DashboardScreen
 import com.safex.app.presentation.emergency.EmergencySOSScreen
 import com.safex.app.presentation.home.EnhancedHomeScreen
 import com.safex.app.presentation.screens.callguard.CallGuardScreen
+import com.safex.app.presentation.screens.defense.CoreDefenseDashboardScreen
+import com.safex.app.presentation.screens.defense.DigitalArrestScreen
+import com.safex.app.presentation.screens.defense.FamilyGuardianScreen
+import com.safex.app.presentation.screens.defense.RemoteAccessScreen
+import com.safex.app.presentation.screens.defense.UpiProtectionScreen
 import com.safex.app.presentation.screens.devicesecurity.DeviceSecurityScreen
 import com.safex.app.presentation.screens.history.HistoryScreen
 import com.safex.app.presentation.screens.onboarding.OnboardingScreen
 import com.safex.app.presentation.screens.reportfraud.ReportFraudScreen
-import com.safex.app.presentation.screens.settings.SettingsScreen
 import com.safex.app.presentation.screens.settings.PrivacyPolicyScreen
+import com.safex.app.presentation.screens.settings.SettingsScreen
 import com.safex.app.presentation.screens.urlscanner.UrlScannerScreen
 import com.safex.app.presentation.voiceanalysis.VoiceAnalysisScreen
 
@@ -68,7 +73,8 @@ fun SAFExNavGraph(
                 onNavigateToReportFraud = { navController.navigate(Screen.ReportFraud.route) },
                 onNavigateToChatbot = { navController.navigate(Screen.Chatbot.route) },
                 onNavigateToAppSentry = { navController.navigate(Screen.AppSentry.route) },
-                onNavigateToSecurityAdvisor = { navController.navigate(Screen.SecurityAdvisor.route) }
+                onNavigateToSecurityAdvisor = { navController.navigate(Screen.SecurityAdvisor.route) },
+                onNavigateToCoreDefense = { navController.navigate(Screen.CoreDefense.route) }
             )
         }
 
@@ -180,6 +186,32 @@ fun SAFExNavGraph(
             DeviceSecurityScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
+        }
+
+        composable(Screen.CoreDefense.route) {
+            CoreDefenseDashboardScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToUpi = { navController.navigate(Screen.UpiProtection.route) },
+                onNavigateToRemoteAccess = { navController.navigate(Screen.RemoteAccess.route) },
+                onNavigateToDigitalArrest = { navController.navigate(Screen.DigitalArrest.route) },
+                onNavigateToFamilyGuardian = { navController.navigate(Screen.FamilyGuardian.route) }
+            )
+        }
+
+        composable(Screen.UpiProtection.route) {
+            UpiProtectionScreen(onNavigateBack = { navController.popBackStack() })
+        }
+
+        composable(Screen.RemoteAccess.route) {
+            RemoteAccessScreen(onNavigateBack = { navController.popBackStack() })
+        }
+
+        composable(Screen.DigitalArrest.route) {
+            DigitalArrestScreen(onNavigateBack = { navController.popBackStack() })
+        }
+
+        composable(Screen.FamilyGuardian.route) {
+            FamilyGuardianScreen(onNavigateBack = { navController.popBackStack() })
         }
     }
 }
