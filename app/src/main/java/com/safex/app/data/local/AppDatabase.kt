@@ -10,6 +10,7 @@ import com.safex.app.data.local.dao.ChatDao
 import com.safex.app.data.local.dao.GuardianDao
 import com.safex.app.data.local.dao.ScanHistoryDao
 import com.safex.app.data.local.dao.SecurityIncidentDao
+import com.safex.app.data.local.dao.UserProfileDao
 import com.safex.app.data.local.entity.AlertEntity
 import com.safex.app.data.local.entity.ApkInspectionEntity
 import com.safex.app.data.local.entity.CallRecordEntity
@@ -20,6 +21,7 @@ import com.safex.app.data.local.entity.ScanHistoryEntity
 import com.safex.app.data.local.entity.ScannedAppEntity
 import com.safex.app.data.local.entity.SecurityIncidentEntity
 import com.safex.app.data.local.entity.TrustedAppEntity
+import com.safex.app.data.local.entity.UserProfileEntity
 import com.safex.app.data.local.entity.VirusTotalCacheEntity
 
 @Database(
@@ -34,9 +36,10 @@ import com.safex.app.data.local.entity.VirusTotalCacheEntity
         VirusTotalCacheEntity::class,
         TrustedAppEntity::class,
         GuardianEntity::class,
-        SecurityIncidentEntity::class
+        SecurityIncidentEntity::class,
+        UserProfileEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -48,4 +51,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun appSentryDao(): AppSentryDao
     abstract fun guardianDao(): GuardianDao
     abstract fun securityIncidentDao(): SecurityIncidentDao
+    abstract fun userProfileDao(): UserProfileDao
 }
