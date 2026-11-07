@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -33,16 +36,28 @@ fun ContactVerificationScreen(
     var phoneNumber by remember { mutableStateOf("") }
 
     Scaffold(
+        containerColor = com.safex.app.presentation.theme.CleanSlate,
         topBar = {
             TopAppBar(
-                title = { Text("Contact Verification", fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        "Contact Verification",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = com.safex.app.presentation.theme.ShieldBlue
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = com.safex.app.presentation.theme.ShieldBlue
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = com.safex.app.presentation.theme.SurfaceWhite
                 )
             )
         }
@@ -204,7 +219,7 @@ fun VerificationResultCard(
                             TrustLevel.SAFE -> Icons.Default.CheckCircle
                             TrustLevel.SUSPICIOUS -> Icons.Default.Warning
                             TrustLevel.DANGEROUS -> Icons.Default.Dangerous
-                            TrustLevel.UNKNOWN -> Icons.Default.Help
+                            TrustLevel.UNKNOWN -> Icons.AutoMirrored.Filled.Help
                         },
                         contentDescription = null,
                         tint = iconColor,
@@ -227,7 +242,7 @@ fun VerificationResultCard(
                 }
             }
 
-            Divider()
+            HorizontalDivider()
 
             // Details
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -375,7 +390,7 @@ fun RecentVerificationItem(verification: RecentVerification) {
                     TrustLevel.SAFE -> Icons.Default.CheckCircle
                     TrustLevel.SUSPICIOUS -> Icons.Default.Warning
                     TrustLevel.DANGEROUS -> Icons.Default.Dangerous
-                    TrustLevel.UNKNOWN -> Icons.Default.Help
+                    TrustLevel.UNKNOWN -> Icons.AutoMirrored.Filled.Help
                 },
                 contentDescription = null,
                 tint = when (verification.trustLevel) {

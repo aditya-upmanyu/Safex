@@ -22,6 +22,83 @@ class SettingsDataStore(private val context: Context) {
         val RISK_THRESHOLD = intPreferencesKey("risk_threshold")
         val CALL_GUARD_ENABLED = booleanPreferencesKey("call_guard_enabled")
         val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
+        val CHAT_LANGUAGE = stringPreferencesKey("chat_language")
+        val CHAT_TTS_ENABLED = booleanPreferencesKey("chat_tts_enabled")
+        val CHAT_SPEECH_RATE = floatPreferencesKey("chat_speech_rate")
+        val CHAT_AI_ENABLED = booleanPreferencesKey("chat_ai_enabled")
+        val CHAT_ELDER_MODE = booleanPreferencesKey("chat_elder_mode")
+        val CHAT_AI_CONSENT = booleanPreferencesKey("chat_ai_consent")
+        val CHAT_AUTO_DELETE_DAYS = intPreferencesKey("chat_auto_delete_days")
+    }
+
+    val chatLanguage: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[Keys.CHAT_LANGUAGE] ?: "en"
+    }
+
+    suspend fun setChatLanguage(languageCode: String) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.CHAT_LANGUAGE] = languageCode
+        }
+    }
+
+    val chatTtsEnabled: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[Keys.CHAT_TTS_ENABLED] ?: false
+    }
+
+    suspend fun setChatTtsEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.CHAT_TTS_ENABLED] = enabled
+        }
+    }
+
+    val chatSpeechRate: Flow<Float> = context.dataStore.data.map { preferences ->
+        preferences[Keys.CHAT_SPEECH_RATE] ?: 0.9f
+    }
+
+    suspend fun setChatSpeechRate(rate: Float) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.CHAT_SPEECH_RATE] = rate
+        }
+    }
+
+    val chatAiEnabled: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[Keys.CHAT_AI_ENABLED] ?: true
+    }
+
+    suspend fun setChatAiEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.CHAT_AI_ENABLED] = enabled
+        }
+    }
+
+    val chatElderMode: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[Keys.CHAT_ELDER_MODE] ?: false
+    }
+
+    suspend fun setChatElderMode(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.CHAT_ELDER_MODE] = enabled
+        }
+    }
+
+    val chatAiConsent: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[Keys.CHAT_AI_CONSENT] ?: false
+    }
+
+    suspend fun setChatAiConsent(consented: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.CHAT_AI_CONSENT] = consented
+        }
+    }
+
+    val chatAutoDeleteDays: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[Keys.CHAT_AUTO_DELETE_DAYS] ?: 0
+    }
+
+    suspend fun setChatAutoDeleteDays(days: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[Keys.CHAT_AUTO_DELETE_DAYS] = days
+        }
     }
 
     val onboardingDone: Flow<Boolean> = context.dataStore.data.map { preferences ->

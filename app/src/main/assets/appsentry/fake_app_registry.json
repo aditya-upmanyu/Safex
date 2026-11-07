@@ -1,0 +1,43 @@
+{
+  "legitimate_packages": {
+    "com.sbi.lotusintouch": "SBI YONO",
+    "com.phonepe.app": "PhonePe",
+    "com.google.android.apps.nbu.paisa.user": "Google Pay",
+    "net.one97.paytm": "Paytm",
+    "in.org.npci.upiapp": "BHIM UPI",
+    "com.msf.kbank.mobile": "Kotak 811",
+    "com.csam.icici.bank.imobile": "iMobile Pay by ICICI",
+    "com.snapwork.hdfc": "HDFC MobileBanking",
+    "com.axis.mobile": "Axis Mobile",
+    "in.gov.uidai.mAadhaarPlus": "mAadhaar",
+    "com.mParivahan": "NextGen mParivahan",
+    "com.digilocker.android": "DigiLocker",
+    "com.whatsapp": "WhatsApp Messenger",
+    "org.telegram.messenger": "Telegram"
+  },
+  "known_rat_signatures": [
+    "com.anydesk.anydeskandroid",
+    "com.teamviewer.host.market",
+    "com.teamviewer.quicksupport.market",
+    "com.sand.airdroid",
+    "com.rustdesk.rustdesk",
+    "com.splashtop.remote",
+    "com.awesun",
+    "org.torproject.torbrowser",
+    "com.example.remotedroid",
+    "com.spynote",
+    "com.craxrat"
+  ],
+  "suspicious_package_patterns": [
+    ".*\\.bank.*update.*",
+    ".*\\.kyc.*verify.*",
+    ".*\\.sbi.*official.*",
+    ".*\\.yono.*reward.*",
+    ".*\\.aadhaar.*update.*",
+    ".*\\.pan.*link.*",
+    ".*\\.lottery.*claim.*",
+    ".*\\.bijli.*bill.*",
+    ".*\\.electricity.*officer.*",
+    ".*\\.challan.*pay.*"
+  ]
+}

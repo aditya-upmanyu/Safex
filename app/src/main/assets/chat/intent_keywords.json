@@ -1,0 +1,52 @@
+{
+  "email_check": [
+    "email", "mail", "phishing", "fake email", "inbox", "gmail", "spam", "urgent email",
+    "ईमेल", "मेल", "फ़िशिंग", "फर्जी ईमेल", "नकली ईमेल", "स्पैम", "धोखाधड़ी ईमेल",
+    "email aaya", "mail aaya", "fake mail", "phishing mail", "sbi email", "lottery email", "email verification", "suspicious mail"
+  ],
+  "call_received": [
+    "call", "phone call", "incoming call", "unknown number", "trai", "fedex", "customs", "fake call", "caller", "spammer",
+    "कॉल", "फोन कॉल", "अनजान नंबर", "ट्राई", "कूरियर", "कस्टम्स", "धमकी भरा कॉल", "फर्जी कॉल", "नकली पुलिस फोन",
+    "call aaya", "phone aaya", "unknown call", "fake caller", "police phone", "trai call", "customs call", "fedex parcel"
+  ],
+  "setup_2fa": [
+    "2fa", "two factor", "two step", "authenticator", "verification code", "passkey", "backup codes", "google authenticator", "secure account",
+    "टू फैक्टर", "टू स्टेप", "ऑथेंटिकेटर", "वेरिफिकेशन कोड", "पासकी", "सुरक्षा कोड", "अकाउंट सुरक्षित",
+    "two step verification", "2fa kaise lagaye", "google authenticator setup", "whatsapp 2fa", "account lock", "two step kaise kare"
+  ],
+  "otp_pin_asked": [
+    "otp", "pin", "cvv", "upi pin", "atm pin", "secret code", "verification code", "otp verification", "share otp",
+    "ओटीपी", "पिन", "सीवीवी", "यूपीआई पिन", "एटीएम पिन", "कोड मांगा", "ओटीपी मांगा", "पिन पूछा",
+    "otp maanga", "pin maanga", "upi pin pucha", "otp share", "cvv maanga", "otp verification call", "pin bata do"
+  ],
+  "money_lost": [
+    "money lost", "money deducted", "debited", "fraud transaction", "paisa kat gaya", "stolen money", "unauthorized transfer", "utr", "1930",
+    "पैसे कट गए", "पैसा चला गया", "खाता खाली", "रुपये कट गए", "पैसे कट", "धोखाधड़ी लेन देन", "अवैध ट्रांसफर", "खाता खाली हो गया",
+    "paise kat gaye", "paisa chala gaya", "account se paise nikal gaye", "money transfer ho gaya", "account empty", "paise wapas", "fraud payment"
+  ],
+  "link_qr_check": [
+    "link", "url", "qr", "qr code", "scan", "barcode", "website link", "short link", "bitly", "phishing link",
+    "लिंक", "क्यूआर", "क्यूआर कोड", "स्कैन", "फर्जी लिंक", "वेबसाइट लिंक", "स्कैन कोड",
+    "link aaya", "qr bheja", "qr scan", "link safe hai", "url scan", "payment link", "kyc link", "qr code scam"
+  ],
+  "digital_arrest": [
+    "digital arrest", "warrant", "cbi", "ed", "police arrest", "video call arrest", "skype call", "narcotics", "court order", "supreme court",
+    "डिजिटल अरेस्ट", "गिरफ्तार", "गिरफ्तारी", "सीबीआई", "ईडी", "वारंट", "पुलिस अरेस्ट", "कोर्ट आर्डर", "नशीली दवाएं",
+    "digital arrest kiya", "giraftar", "police video call", "cbi raid", "ed notice", "arrest warrant", "skype video police", "arrest dhamki"
+  ],
+  "account_hacked": [
+    "hacked", "account hacked", "whatsapp", "whatsapp hacked", "instagram hacked", "password leaked", "unauthorized access", "session hijacked", "login alert",
+    "हैक", "अकाउंट हैक", "व्हाट्सएप", "व्हाट्सएप हैक", "पासवर्ड चोरी", "खाता हैक", "लॉगिन अलर्ट", "आईडी हैक",
+    "hack ho gaya", "whatsapp hack", "insta hack", "facebook hack", "password change ho gaya", "koi aur chala raha hai", "account login nahi ho raha"
+  ],
+  "blackmail": [
+    "blackmail", "extortion", "threat", "photo viral", "video viral", "nude video", "sextortion", "telemanas", "morphed photo",
+    "ब्लैकमेल", "धमकी", "वीडियो वायरल", "फोटो वायरल", "न्यूड कॉल", "गंदी वीडियो", "मानसिक प्रताड़ना", "पैसे मांग रहे हैं",
+    "blackmail kar raha hai", "video viral karne ki dhamki", "photo viral", "dhamki de raha hai", "nude call scam", "extortion call", "badnaam karne ki dhamki"
+  ],
+  "shared_info": [
+    "shared info", "aadhaar", "card details", "pancard", "personal details", "id proof", "compromised details", "uidai", "lock biometrics",
+    "आधार", "कार्ड नंबर", "पैन कार्ड", "दस्तावेज शेयर", "डॉक्यूमेंट दिया", "बायोमेट्रिक लॉक", "पर्सनल डेटा",
+    "aadhaar details", "aadhaar de diya", "card details share kar di", "details share", "share kar di", "pan card bheja", "id proof de diya", "aadhaar lock", "aadhaar biometric"
+  ]
+}

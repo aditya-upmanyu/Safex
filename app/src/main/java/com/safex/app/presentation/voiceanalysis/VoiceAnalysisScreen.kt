@@ -3,6 +3,7 @@ package com.safex.app.presentation.voiceanalysis
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.safex.app.presentation.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,14 +30,25 @@ fun VoiceAnalysisScreen(
     }
 
     Scaffold(
+        containerColor = CleanSlate,
         topBar = {
             TopAppBar(
-                title = { Text("Voice Analysis", fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        "Voice Analysis",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = ShieldBlue
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = ShieldBlue)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = SurfaceWhite
+                )
             )
         }
     ) { paddingValues ->

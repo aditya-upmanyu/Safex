@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,8 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
+import com.safex.app.presentation.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,29 +46,31 @@ fun DashboardScreen(
     )
 
     Scaffold(
+        containerColor = CleanSlate,
         topBar = {
             TopAppBar(
                 title = { 
                     Text(
                         "Fraud Dashboard",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = ShieldBlue
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = ShieldBlue)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = SurfaceWhite
                 ),
                 actions = {
                     IconButton(onClick = { viewModel.refreshData() }) {
                         Icon(
                             Icons.Default.Refresh,
                             contentDescription = "Refresh",
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            tint = MutedSlate
                         )
                     }
                 }
@@ -274,7 +279,7 @@ fun StatisticsOverview(stats: DashboardStats) {
             }
 
             LinearProgressIndicator(
-                progress = stats.protectionRate / 100f,
+                progress = { stats.protectionRate / 100f },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)

@@ -9,6 +9,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
 import com.safex.app.data.datastore.SettingsDataStore
+import com.safex.app.presentation.chatbot.voice.SpeechInputController
+import com.safex.app.presentation.chatbot.voice.TtsController
 import com.safex.app.presentation.navigation.SAFExNavGraph
 import com.safex.app.presentation.navigation.Screen
 import com.safex.app.presentation.theme.SAFExTheme
@@ -21,6 +23,12 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var settingsDataStore: SettingsDataStore
+
+    @Inject
+    lateinit var speechInputController: SpeechInputController
+
+    @Inject
+    lateinit var ttsController: TtsController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +53,17 @@ class MainActivity : ComponentActivity() {
                 }
                 SAFExNavGraph(
                     navController = navController,
-                    startDestination = startDestination
+                    startDestination = startDestination,
+                    speechInputController = speechInputController,
+                    ttsController = ttsController
                 )
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ttsController.shutdown()
+        speechInputController.stopListening()
     }
 }

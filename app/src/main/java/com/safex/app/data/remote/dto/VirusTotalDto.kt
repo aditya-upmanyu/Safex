@@ -51,3 +51,20 @@ data class VirusTotalAnalysisResponse(
         @SerializedName("message") val message: String?
     )
 }
+
+data class VirusTotalFileReportResponse(
+    @SerializedName("data") val data: FileData?,
+    @SerializedName("error") val error: VirusTotalAnalysisResponse.ErrorDetail?
+) {
+    data class FileData(
+        @SerializedName("id") val id: String?,
+        @SerializedName("type") val type: String?,
+        @SerializedName("attributes") val attributes: FileAttributes?
+    )
+
+    data class FileAttributes(
+        @SerializedName("last_analysis_stats") val lastAnalysisStats: VirusTotalAnalysisResponse.Stats?,
+        @SerializedName("meaningful_name") val meaningfulName: String?,
+        @SerializedName("reputation") val reputation: Int?
+    )
+}

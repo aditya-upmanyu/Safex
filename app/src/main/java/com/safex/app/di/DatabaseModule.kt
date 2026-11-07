@@ -72,4 +72,16 @@ object DatabaseModule {
     fun provideAlertDao(database: AppDatabase): AlertDao {
         return database.alertDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideChatDao(database: AppDatabase): com.safex.app.data.local.dao.ChatDao {
+        return database.chatDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppSentryDao(database: AppDatabase): com.safex.app.data.local.dao.AppSentryDao {
+        return database.appSentryDao()
+    }
 }

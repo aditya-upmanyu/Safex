@@ -1,0 +1,486 @@
+{
+  "version": 1,
+  "language": "hinglish",
+  "ui": {
+    "welcome": "Namaste, main hoon SAFEx Guard. Online fraud aur cyber scam se bachne mein main aapki madad karunga. Aaj main aapki kya help kar sakta hoon?",
+    "triage_prompt": "Kripya batayein aapke sath kya situation hai:",
+    "triage_options": [
+      { "id": "HAPPENED", "label": "Mere sath fraud ho chuka hai" },
+      { "id": "SUSPECT", "label": "Mujhe kuch suspicious lag raha hai" },
+      { "id": "LEARN", "label": "Main safe rehne ke tarike seekhna chahta hoon" }
+    ],
+    "happened_prompt": "Aapke sath kya incident hua? Neeche select karein taaki hum turant protective action le sakein:",
+    "happened_options": [
+      { "id": "money_lost", "label": "Paise kat gaye / transfer ho gaye" },
+      { "id": "account_hacked", "label": "Account ya WhatsApp hack ho gaya" },
+      { "id": "blackmail", "label": "Blackmail ya dhamki mil rahi hai" },
+      { "id": "shared_info", "label": "OTP, PIN ya Aadhaar share kar diya" }
+    ],
+    "learn_prompt": "Aap kis safety topic ke baare mein jaanna chahte hain?",
+    "emergency_title": "EMERGENCY CYBER RESPONSE",
+    "emergency_body": "Turant action lein! Shuru ke 2-3 ghante (Golden Hour) transaction freeze karne aur paise bachane ke liye sabse zaroori hain.",
+    "listening": "Aapki aawaz suni ja rahi hai...",
+    "thinking": "SAFEx Guard soch raha hai...",
+    "speaking": "Jawab bola ja raha hai...",
+    "tap_to_talk": "Bolne ke liye mic tap karein",
+    "ai_unavailable": "AI assistant abhi offline hai. Local safety guide dikhai ja rahi hai.",
+    "rate_limited": "Sawal poochne ki limit poori ho gayi hai. Kuch minute wait karein ya offline guide use karein.",
+    "offline": "Aap abhi offline hain. Guard ka offline guide active hai.",
+    "disclaimer": "SAFEx Guard safety guidance deta hai, legal ya financial advice nahi. Hum live website ya phone number verify nahi kar sakte.",
+    "masked_notice": "Aapki sensitive details (OTP, PIN, Card, Aadhaar) phone par hi mask ho jati hain.",
+    "empty_videos": "Is topic par abhi koi video available nahi hai."
+  },
+  "topics": [
+    {
+      "id": "email_check",
+      "chip_label": "Email check karein (kya ye real hai?)",
+      "icon": "email",
+      "urgency": "NORMAL",
+      "verdict_hint": "SUSPICIOUS",
+      "empathy_opening": "Bahut accha kiya ki aapne email ke kisi link par click karne se pehle check kiya.",
+      "headline": "Hurry ya warning dikhane wale emails aksar fake (phishing) hote hain.",
+      "why": [
+        "Scammers official companies ke naam se milte-julte emails banate hain.",
+        "Fake links aapko duplicate login page par le jakar credentials chura lete hain.",
+        "Attachments mein spyware ho sakta hai jo phone ko infect karta hai.",
+        "Asli banks kabhi email par turant account closure ki dhamki nahi dete."
+      ],
+      "do_now": [
+        { "text": "Hamara quick email safety checker run karein.", "action": { "type": "OPEN_CHECKER", "value": "email_check" } },
+        { "text": "Sender email address dhyan se check karein (jaise support@sbi-updates.xyz).", "action": { "type": "NONE", "value": "" } },
+        { "text": "Kisi bhi link par click na karein aur file download na karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Phishing email ko incident@cert-in.org.in par report karein.", "action": { "type": "URL", "value": "mailto:incident@cert-in.org.in" } }
+      ],
+      "dont": [
+        "'Update KYC' ya 'Claim Refund' jaise buttons par click na karein.",
+        "Unknown source se aayi ZIP, HTML ya APK file install na karein.",
+        "Email reply mein apna phone number ya banking details na bhejein."
+      ],
+      "contacts": [
+        { "label": "Cyber Crime Portal", "type": "URL", "value": "https://cybercrime.gov.in" },
+        { "label": "National Helpline", "type": "DIAL", "value": "1930" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["email", "phishing", "kyc"],
+      "checker_id": "email_check",
+      "follow_up_chips": [
+        { "label": "Maine pehle hi link click kar diya", "topic_id": "account_hacked" },
+        { "label": "Kisi ne QR code bheja hai", "topic_id": "link_qr_check" }
+      ]
+    },
+    {
+      "id": "call_received",
+      "chip_label": "Suspicious call aayi hai, kya karun?",
+      "icon": "phone",
+      "urgency": "URGENT",
+      "verdict_hint": "LIKELY_SCAM",
+      "empathy_opening": "Calm rahiye aur panic mat kijiye. Scammers jaanbujhkar dar ka mahol banate hain.",
+      "headline": "Pressure banane ya official banne wale calls aksar fraud hote hain.",
+      "why": [
+        "Fraudsters police, FedEx, TRAI ya bank officer bankar phone karte hain.",
+        "Ve Caller-ID spoofing use karte hain taaki number real lage.",
+        "Sim block ya arrest ki dhamki dekar OTP ya paise demand karte hain."
+      ],
+      "do_now": [
+        { "text": "Quick call check checklist start karein.", "action": { "type": "OPEN_CHECKER", "value": "call_check" } },
+        { "text": "Turant phone kaat dein. Kisi stranger ko explanation dene ki zaroorat nahi.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Chakshu portal (Sanchar Saathi) par suspicious call report karein.", "action": { "type": "OPEN_URL", "value": "https://sancharsaathi.gov.in" } },
+        { "text": "Agar bank ka naam liya tha, toh card ke peeche diye helpline par call karein.", "action": { "type": "NONE", "value": "" } }
+      ],
+      "dont": [
+        "Call par bane na rahein aur video call join na karein.",
+        "Caller ke kehne par AnyDesk, TeamViewer ya RustDesk install na karein.",
+        "Phone par koi OTP na batayein aur keypad par koi number press na karein."
+      ],
+      "contacts": [
+        { "label": "Chakshu Portal", "type": "URL", "value": "https://sancharsaathi.gov.in" },
+        { "label": "Cyber Crime Helpline", "type": "DIAL", "value": "1930" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["call", "fake_police", "trai", "courier"],
+      "checker_id": "call_check",
+      "follow_up_chips": [
+        { "label": "Ve Digital Arrest ki baat kar rahe hain", "topic_id": "digital_arrest" },
+        { "label": "Unhone OTP ya PIN maanga", "topic_id": "otp_pin_asked" }
+      ]
+    },
+    {
+      "id": "setup_2fa",
+      "chip_label": "2FA (Two-Factor Auth) kaise lagayein?",
+      "icon": "security",
+      "urgency": "NORMAL",
+      "verdict_hint": "INFO",
+      "empathy_opening": "Apne accounts par 2FA lagana hackers se bachne ka sabse powerful step hai.",
+      "headline": "Two-Factor Authentication 99% automatic hack attacks ko rok deta hai.",
+      "why": [
+        "Agar password leak bhi ho jaye, tab bhi bina second code ke koi login nahi kar sakta.",
+        "Authenticator apps (jaise Google Authenticator) SMS OTP se zyada safe hain.",
+        "Backup recovery codes ensure karte hain ki aap kabhi account se bahar lock na hon."
+      ],
+      "do_now": [
+        { "text": "Google/Gmail: Google Account > Security > 2-Step Verification open karein.", "action": { "type": "OPEN_URL", "value": "https://myaccount.google.com/signinoptions/two-step-verification" } },
+        { "text": "WhatsApp: Settings > Account > Two-Step Verification > Enable karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Social Media: Settings > Accounts Center > Password and Security > 2FA turn on karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Bank Apps: Official bank app mein biometric ya transaction pin lock lagayein.", "action": { "type": "NONE", "value": "" } }
+      ],
+      "dont": [
+        "Apna 2FA OTP ya 6-digit authenticator code kisi ke sath share na karein.",
+        "Backup codes ko plain unencrypted text mein save na karein.",
+        "Menu names badal sakte hain; app ke official help page ko zaroor check karein."
+      ],
+      "contacts": [
+        { "label": "Google 2FA Help", "type": "URL", "value": "https://myaccount.google.com/signinoptions/two-step-verification" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["2fa", "security", "passwords", "authenticator"],
+      "checker_id": null,
+      "follow_up_chips": [
+        { "label": "Mera account already hack ho gaya hai", "topic_id": "account_hacked" },
+        { "label": "Kisi ne OTP maanga tha", "topic_id": "otp_pin_asked" }
+      ]
+    },
+    {
+      "id": "otp_pin_asked",
+      "chip_label": "Kisi ne mera OTP ya PIN maanga hai",
+      "icon": "key",
+      "urgency": "URGENT",
+      "verdict_hint": "LIKELY_SCAM",
+      "empathy_opening": "Bahut accha hua ki aapne share karne se pehle check kiya. Aapke paise bach sakte hain.",
+      "headline": "Koi bhi genuine bank, police ya company aapse OTP ya PIN nahi maangti.",
+      "why": [
+        "OTP aur UPI PIN aapke bank account aur paise ki digital chaabi hote hain.",
+        "Scammers dar ya jaldbazi dikhate hain taaki aap dhyan na de sakein.",
+        "1 rupee ka verification transaction bhi poora account khali kar sakta hai."
+      ],
+      "do_now": [
+        { "text": "Kuch bhi share na karein. Turant phone kaat dein ya reply band karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Agar OTP ya PIN de diya hai, toh turant 1930 par call karein.", "action": { "type": "DIAL", "value": "1930" } },
+        { "text": "Bank ke card ke peeche wale official number par call karke card/UPI block karwayein.", "action": { "type": "NONE", "value": "" } }
+      ],
+      "dont": [
+        "OTP, PIN, CVV ya card number kisi ko na batayein.",
+        "Caller ke bheje kisi link par click na karein.",
+        "Unke kehne par koi screen share ya APK app install na karein."
+      ],
+      "contacts": [
+        { "label": "Cyber Crime Helpline", "type": "DIAL", "value": "1930" },
+        { "label": "Report Online", "type": "URL", "value": "https://cybercrime.gov.in" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["otp", "upi", "bank fraud", "pin"],
+      "checker_id": null,
+      "follow_up_chips": [
+        { "label": "Maine share kar diya aur paise kat gaye", "topic_id": "money_lost" },
+        { "label": "Kaise pata karein ki call fake hai?", "topic_id": "call_received" }
+      ]
+    },
+    {
+      "id": "money_lost",
+      "chip_label": "Paise kat gaye / Fraud transaction hua",
+      "icon": "alert",
+      "urgency": "EMERGENCY",
+      "verdict_hint": "LIKELY_SCAM",
+      "empathy_opening": "Yeh situation stressful hai, lekin aap akele nahi hain. Chaliye turant recovery steps lete hain.",
+      "headline": "Turant 1930 par call karein. Golden Hour mein complaint karne se paise freeze ho sakte hain.",
+      "why": [
+        "Stolen paise kuch ghanton mein multiple accounts mein transfer ho jate hain.",
+        "1930 par call karne se Citizen Financial Fraud system receiver account turant freeze karta hai.",
+        "Bank ko turant inform karne se RBI rules ke mutabik dispute strong hota hai."
+      ],
+      "do_now": [
+        { "text": "Abhi isi waqt 1930 helpline par call karein.", "action": { "type": "DIAL", "value": "1930" } },
+        { "text": "Apne bank emergency number par call karke account aur UPI block karwayein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Transaction details (UTR ID, time, amount, payee) note karke rakhein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "cybercrime.gov.in par complete complaint file karein.", "action": { "type": "OPEN_URL", "value": "https://cybercrime.gov.in" } },
+        { "text": "Screenshots aur SMS save rakhein; chats delete na karein.", "action": { "type": "NONE", "value": "" } }
+      ],
+      "dont": [
+        "Paise wapas paane ke chakkar mein scammer ko aur paise na bhejein.",
+        "Google par helpline numbers search na karein (fake ads hote hain).",
+        "Puri recovery ki guarantee koi nahi de sakta, lekin fast reporting best chance hai."
+      ],
+      "contacts": [
+        { "label": "National Cyber Helpline", "type": "DIAL", "value": "1930" },
+        { "label": "Cyber Crime Portal", "type": "URL", "value": "https://cybercrime.gov.in" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["money_lost", "fraud", "1930", "bank_fraud"],
+      "checker_id": null,
+      "follow_up_chips": [
+        { "label": "Maine card ya Aadhaar bhi share kiya tha", "topic_id": "shared_info" },
+        { "label": "Mera WhatsApp ya email compromised hai", "topic_id": "account_hacked" }
+      ]
+    },
+    {
+      "id": "link_qr_check",
+      "chip_label": "Kya yeh link ya QR code safe hai?",
+      "icon": "qr_code",
+      "urgency": "NORMAL",
+      "verdict_hint": "SUSPICIOUS",
+      "empathy_opening": "Link open karne ya QR scan karne se pehle check karna bahut samajhdari ka decision hai.",
+      "headline": "Paise RECEIVE karne ke liye kabhi bhi QR code scan ya UPI PIN enter nahi karna hota.",
+      "why": [
+        "QR code scan karne se hamesha aapke account se paise katte hain.",
+        "Phishing links bank page ki copy karke aapka password chura lete hain.",
+        "Short links ke peeche dangerous APK download links chupe ho sakte hain."
+      ],
+      "do_now": [
+        { "text": "Agar koi paise bhejne ke liye QR scan karne ko bole, toh bilkul na karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Website domain ke ek-ek spelling ko dhyan se check karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Safe verification ke liye SAFEx URL Scanner use karein.", "action": { "type": "OPEN_TOPIC", "value": "link_qr_check" } }
+      ],
+      "dont": [
+        "OLX ya WhatsApp par bheje gaye QR codes ko scan na karein.",
+        "Lottery prize, subsidy ya free gifts ke links open na karein.",
+        "Paise aate time kabhi bhi UPI PIN na daalein."
+      ],
+      "contacts": [
+        { "label": "Cyber Crime Portal", "type": "URL", "value": "https://cybercrime.gov.in" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["qr_scam", "phishing_link", "upi_scam"],
+      "checker_id": "link_check",
+      "follow_up_chips": [
+        { "label": "Maine UPI PIN daal diya aur paise kat gaye", "topic_id": "money_lost" },
+        { "label": "Link mein Aadhaar ya PAN manga tha", "topic_id": "shared_info" }
+      ]
+    },
+    {
+      "id": "digital_arrest",
+      "chip_label": "Ve bol rahe hain ki main 'Digital Arrest' hoon",
+      "icon": "shield",
+      "urgency": "EMERGENCY",
+      "verdict_hint": "LIKELY_SCAM",
+      "empathy_opening": "Ghabraiye mat. Indian law mein 'Digital Arrest' jaisa koi rule nahi hai. Aap bilkul safe hain.",
+      "headline": "Real Police, CBI ya ED kabhi bhi video call par kisi ko arrest ya interrogate nahi karte.",
+      "why": [
+        "Scammers fake police uniform pehante hain aur video call par fake warrants dikhate hain.",
+        "Ve jhoota arop lagate hain ki aapke Aadhaar se drugs ya money laundering hui hai.",
+        "Ve 'RBI verification' ke naam par paise transfer karne ko bolte hain jo 100% scam hai."
+      ],
+      "do_now": [
+        { "text": "Turant WhatsApp ya Skype video call kaat dein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Turant 1930 Cyber Crime Helpline par call karein.", "action": { "type": "DIAL", "value": "1930" } },
+        { "text": "Apne family ya close friend ko turant batayein; akele kamre mein na baithein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "cybercrime.gov.in portal par extortion report karein.", "action": { "type": "OPEN_URL", "value": "https://cybercrime.gov.in" } }
+      ],
+      "dont": [
+        "Case khatam karne ke naam par 1 rupya bhi transfer na karein.",
+        "Camera ke aage baithe rehne ya kisi se baat na karne ka unka order na maanein.",
+        "Video call par apna bank passbook ya Aadhaar card na dikhayein."
+      ],
+      "contacts": [
+        { "label": "Cyber Helpline", "type": "DIAL", "value": "1930" },
+        { "label": "National Cyber Crime Reporting", "type": "URL", "value": "https://cybercrime.gov.in" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["digital_arrest", "fake_cbi", "extortion", "police_scam"],
+      "checker_id": null,
+      "follow_up_chips": [
+        { "label": "Maine darr ke mare paise transfer kar diye", "topic_id": "money_lost" },
+        { "label": "Ve photos se blackmail kar rahe hain", "topic_id": "blackmail" }
+      ]
+    },
+    {
+      "id": "account_hacked",
+      "chip_label": "Mera account ya WhatsApp hack ho gaya",
+      "icon": "lock",
+      "urgency": "URGENT",
+      "verdict_hint": "LIKELY_SCAM",
+      "empathy_opening": "Panic mat kijiye. Sahi steps lene se hacked accounts usually wapas mil jaate hain.",
+      "headline": "Safe device se password change karein aur sabhi active sessions se logout karein.",
+      "why": [
+        "Hackers malware, SIM swap ya leaked password ke zariye access paate hain.",
+        "Ve aapke contacts ko message karke emergency paise maangte hain.",
+        "Ve recovery email aur number change karke aapko lock kar dete hain."
+      ],
+      "do_now": [
+        { "text": "Kisi safe phone se turant apna password change karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Security settings mein jakar 'Log out of all devices' karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Recovery email aur backup phone number update karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Family aur dosto ko alert karein ki aapke naam se kisi ko paise na bhejein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Authenticator app se 2FA enable karein.", "action": { "type": "OPEN_TOPIC", "value": "setup_2fa" } }
+      ],
+      "dont": [
+        "Same compromised password ko doosre apps mein use na karein.",
+        "Unknown SMS se aaye recovery links par click na karein.",
+        "New device login warning alerts ko ignore na karein."
+      ],
+      "contacts": [
+        { "label": "Cyber Crime Helpline", "type": "DIAL", "value": "1930" },
+        { "label": "Report Cyber Crime", "type": "URL", "value": "https://cybercrime.gov.in" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["hacked", "whatsapp_hack", "password_reset", "security"],
+      "checker_id": null,
+      "follow_up_chips": [
+        { "label": "2FA setup kaise karein", "topic_id": "setup_2fa" },
+        { "label": "Account se paise bhi kat gaye hain", "topic_id": "money_lost" }
+      ]
+    },
+    {
+      "id": "blackmail",
+      "chip_label": "Photos ya video se blackmail / dhamki",
+      "icon": "shield",
+      "urgency": "EMERGENCY",
+      "verdict_hint": "LIKELY_SCAM",
+      "empathy_opening": "Isme aapki koi galti nahi hai. Aap akele nahi hain, himmat rakhein aur calm rahein.",
+      "headline": "Blackmailer ko ek bhi rupya na dein. Paise dene par ve aur zyada maangte hain.",
+      "why": [
+        "Scammers morphed images ya recorded video calls se dara kar paise vasoolte hain.",
+        "Ransom dene se extortion kabhi nahi rukta, balki ve baar baar maangte hain.",
+        "Cyber police ke paas offensive content ko internet se hatane ka formal system hai."
+      ],
+      "do_now": [
+        { "text": "Kisi bhi haal mein koi paise na bhejein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Chats, QR codes, phone number aur profile links ke screenshots lein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Scammer ko WhatsApp aur social media par turant block karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "1930 par call karein ya cybercrime.gov.in par formal complaint darj karein.", "action": { "type": "DIAL", "value": "1930" } },
+        { "text": "Agar bahut distress mehsoos ho, toh Tele-MANAS helpline (14416) par baat karein.", "action": { "type": "DIAL", "value": "14416" } }
+      ],
+      "dont": [
+        "Blackmailer se request ya negotiation na karein.",
+        "Evidence delete karne ke chakkar mein pehle chat delete na karein.",
+        "Khud ko guilty na maanein. Yeh ek planned cyber crime hai."
+      ],
+      "contacts": [
+        { "label": "Cyber Helpline", "type": "DIAL", "value": "1930" },
+        { "label": "Tele-MANAS Mental Health", "type": "DIAL", "value": "14416" },
+        { "label": "NCRP Portal", "type": "URL", "value": "https://cybercrime.gov.in" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["blackmail", "sextortion", "telemanas", "harassment"],
+      "checker_id": null,
+      "follow_up_chips": [
+        { "label": "Maine pehle hi kuch paise bhej diye", "topic_id": "money_lost" },
+        { "label": "Unke paas mera Aadhaar aur contacts hain", "topic_id": "shared_info" }
+      ]
+    },
+    {
+      "id": "shared_info",
+      "chip_label": "Aadhaar, card ya personal details share kar di",
+      "icon": "account_box",
+      "urgency": "URGENT",
+      "verdict_hint": "SUSPICIOUS",
+      "empathy_opening": "Yeh kisi ke sath bhi ho sakta hai. Abhi timely action lene se aap misuse ko rok sakte hain.",
+      "headline": "UIDAI par Aadhaar biometrics lock karein aur cards turant freeze karwayein.",
+      "why": [
+        "Card details leak hone par unauthorized transactions ho sakte hain.",
+        "Aadhaar aur OTP misuse karke fake SIM ya personal loans liye ja sakte hain.",
+        "Time par lock karne se unauthorized authentication attempts block ho jate hain."
+      ],
+      "do_now": [
+        { "text": "Bank ko call karke debit ya credit card block karwayein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "UIDAI portal ya mAadhaar app se Aadhaar biometrics lock karein.", "action": { "type": "OPEN_URL", "value": "https://myaadhaar.uidai.gov.in" } },
+        { "text": "Net banking aur emails ke passwords change karein.", "action": { "type": "NONE", "value": "" } },
+        { "text": "Unknown loans check karne ke liye CIBIL/Credit report periodically dekhein.", "action": { "type": "NONE", "value": "" } }
+      ],
+      "dont": [
+        "Phone par aane wale naye OTP ko approve ya share na karein.",
+        "Old banking passwords ko dobara reuse na karein.",
+        "Unverified agents ko physical documents na dein."
+      ],
+      "contacts": [
+        { "label": "UIDAI Official Portal", "type": "URL", "value": "https://myaadhaar.uidai.gov.in" },
+        { "label": "Cyber Crime Helpline", "type": "DIAL", "value": "1930" }
+      ],
+      "related_video_ids": [],
+      "video_tags": ["aadhaar", "card_block", "uidai", "identity_theft"],
+      "checker_id": null,
+      "follow_up_chips": [
+        { "label": "Mera paisa kat chuka hai", "topic_id": "money_lost" },
+        { "label": "2FA security kaise enable karein", "topic_id": "setup_2fa" }
+      ]
+    }
+  ],
+  "checkers": [
+    {
+      "id": "email_check",
+      "title": "Email Safety Checker",
+      "intro": "In 6 sawalon ke jawab dekar check karein ki kya yeh email dangerous phishing scam hai.",
+      "questions": [
+        { "id": "E1", "text": "Kya email mein KYC update, account block se bachne ya refund ke liye link click karne ko kaha gaya hai?", "critical": false },
+        { "id": "E2", "text": "Kya email 24 ghante mein account band hone ya legal notice ki urgency create karta hai?", "critical": false },
+        { "id": "E3", "text": "Kya isme password, OTP, UPI PIN, Card CVV ya Aadhaar details maangi gayi hain?", "critical": true },
+        { "id": "E4", "text": "Kya sender ka email domain fake ya misspelled lag raha hai (jaise support@sbi-updates.xyz)?", "critical": false },
+        { "id": "E5", "text": "Kya email mein koi unexpected ZIP, HTML ya APK attachment hai?", "critical": true },
+        { "id": "E6", "text": "Kya isme bina apply kiye lottery prize, tax refund ya instant job ka offer hai?", "critical": false }
+      ],
+      "result_texts": {
+        "LOW_RISK": {
+          "headline": "Low Risk Signs Found",
+          "body": "Koi obvious phishing indicator nahi mila, lekin yaad rakhein koi bhi automatic tool 100% safety guarantee nahi karta. Passwords ya OTP kabhi share na karein.",
+          "next_topic": "setup_2fa"
+        },
+        "SUSPICIOUS": {
+          "headline": "Suspicious Email Signs",
+          "body": "Is email mein scam patterns hain. Kisi bhi link par click na karein aur official number se verify karein.",
+          "next_topic": "email_check"
+        },
+        "LIKELY_SCAM": {
+          "headline": "High Danger: Confirmed Phishing Email!",
+          "body": "Critical phishing indicators detect hue hain. Yeh email data chori karne ke liye bheja gaya hai. Reply na karein aur incident@cert-in.org.in par report karein.",
+          "next_topic": "account_hacked"
+        }
+      }
+    },
+    {
+      "id": "call_check",
+      "title": "Call Safety Checker",
+      "intro": "In 6 sawalon ke jawab dekar jaanchein ki kya caller koi scammer ya imposter hai.",
+      "questions": [
+        { "id": "C1", "text": "Kya caller ne khud ko Police, CBI, ED, Customs, TRAI ya courier (FedEx) bataya?", "critical": false },
+        { "id": "C2", "text": "Kya unhone kisi crime ka ilzam lagaya ya immediate arrest ya SIM disconnection ki dhamki di?", "critical": false },
+        { "id": "C3", "text": "Kya unhone call/video par continue rehne aur family ko na batane ka instruction diya?", "critical": false },
+        { "id": "C4", "text": "Kya unhone paise, OTP, UPI PIN ya 'verification account' mein paise bhejne ko bola?", "critical": true },
+        { "id": "C5", "text": "Kya unhone koi app (AnyDesk, TeamViewer, RustDesk) download karne ya screen share karne ko bola?", "critical": true },
+        { "id": "C6", "text": "Kya call kisi unknown international number ya suspicious WhatsApp video call se aayi?", "critical": false }
+      ],
+      "result_texts": {
+        "LOW_RISK": {
+          "headline": "No Obvious Scam Signals",
+          "body": "Regular safety follow karein: phone par kisi ko bhi OTP, password ya confidential information na batayein.",
+          "next_topic": "setup_2fa"
+        },
+        "SUSPICIOUS": {
+          "headline": "Suspicious Call - Be Cautious",
+          "body": "Caller suspicious lag raha hai. Call cut karein aur card ke peeche diye official helpline par contact karein.",
+          "next_topic": "call_received"
+        },
+        "LIKELY_SCAM": {
+          "headline": "High Threat: Scam Call Detected!",
+          "body": "Yeh digital arrest ya remote access scam ka case lag raha hai. Turant call disconnect karein aur 1930 par report karein.",
+          "next_topic": "digital_arrest"
+        }
+      }
+    },
+    {
+      "id": "link_check",
+      "title": "Link and QR Checker",
+      "intro": "Kisi bhi link ko open karne ya QR code scan karne se pehle in baton ka dhyan rakhein.",
+      "questions": [
+        { "id": "L1", "text": "Kya link mein 'https://' missing hai ya standard website ke bajaye koi IP address dikh raha hai?", "critical": false },
+        { "id": "L2", "text": "Kya domain kisi trusted brand ki copy kar raha hai (jaise sbii-online, incometax-refund)?", "critical": true },
+        { "id": "L3", "text": "Kya kisi ne aapko paise 'receive' karne ke liye QR scan karne ko bola hai?", "critical": true },
+        { "id": "L4", "text": "Kya website phone mein direct koi APK file download karne ko bol rahi hai?", "critical": true }
+      ],
+      "result_texts": {
+        "LOW_RISK": {
+          "headline": "No Direct Threat Found",
+          "body": "Carefully proceed karein. Hamesha address bar mein domain spelling confirm karein.",
+          "next_topic": "link_qr_check"
+        },
+        "SUSPICIOUS": {
+          "headline": "Suspicious Link Traits",
+          "body": "Is link mein risky features hain. Is website par password ya card details na daalein.",
+          "next_topic": "link_qr_check"
+        },
+        "LIKELY_SCAM": {
+          "headline": "Scam Link or QR Code!",
+          "body": "Fraud ka high risk hai. QR scan na karein aur UPI PIN enter na karein.",
+          "next_topic": "money_lost"
+        }
+      }
+    }
+  ]
+}

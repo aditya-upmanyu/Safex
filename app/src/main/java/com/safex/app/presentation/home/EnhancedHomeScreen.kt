@@ -2,8 +2,11 @@ package com.safex.app.presentation.home
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -12,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,15 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.safex.app.presentation.theme.SAFExTheme
-import java.text.SimpleDateFormat
+import com.safex.app.presentation.components.SecurityScoreGauge
+import com.safex.app.presentation.theme.*
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,61 +47,66 @@ fun EnhancedHomeScreen(
     onNavigateToSettings: () -> Unit = {},
     onNavigateToDeviceSecurity: () -> Unit = {},
     onNavigateToReportFraud: () -> Unit = {},
+    onNavigateToChatbot: () -> Unit = {},
+    onNavigateToAppSentry: () -> Unit = {},
     viewModel: EnhancedHomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
 
-    // Pulse animation for protection shield
-    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-    val pulseScale by infiniteTransition.animateFloat(
-        initialValue = 0.95f,
-        targetValue = 1.05f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "pulse"
-    )
-
     Scaffold(
+        containerColor = CleanSlate,
         topBar = {
+            // Screen Header: Crisp background, Shield Blue title — no gradients
             TopAppBar(
                 title = {
                     Column {
                         Text(
-                            "SAFEx",
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold
+                            text = "SAFEx",
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = ShieldBlue,
+                            letterSpacing = 0.sp
                         )
                         Text(
-                            getCurrentGreeting(),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            text = getCurrentGreeting(),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MutedSlate
                         )
                     }
                 },
                 actions = {
+                    // Notification bell
                     IconButton(onClick = onNavigateToHistory) {
                         BadgedBox(
                             badge = {
                                 if (uiState.notificationCount > 0) {
-                                    Badge {
+                                    Badge(
+                                        containerColor = AlertCrimson,
+                                        contentColor = SurfaceWhite
+                                    ) {
                                         Text("${uiState.notificationCount}")
                                     }
                                 }
                             }
                         ) {
-                            Icon(Icons.Default.Notifications, "Notifications")
+                            Icon(
+                                Icons.Default.Notifications,
+                                contentDescription = "Notifications",
+                                tint = MutedSlate
+                            )
                         }
                     }
-
                     IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, "Settings")
+                        Icon(
+                            Icons.Default.Settings,
+                            contentDescription = "Settings",
+                            tint = MutedSlate
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = SurfaceWhite
                 )
             )
         }
@@ -104,593 +114,651 @@ fun EnhancedHomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(CleanSlate)
                 .padding(paddingValues)
                 .verticalScroll(scrollState)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Protection Status Hero Card
-            ProtectionStatusHeroCard(
+            // ─────────────────────────────────────────────────────────────────
+            // HERO ZONE — Security Score Gauge (top 30%: the most critical metric)
+            // ─────────────────────────────────────────────────────────────────
+            HeroSecurityCard(
                 isActive = uiState.isProtectionActive,
-                protectionScore = uiState.protectionScore,
-                pulseScale = pulseScale,
-                onToggleProtection = { viewModel.toggleProtection() },
-                onShieldClick = onNavigateToDeviceSecurity
+                score = uiState.protectionScore,
+                onToggle = { viewModel.toggleProtection() },
+                onTap = onNavigateToDeviceSecurity
             )
 
-            // Quick Stats Row
-            QuickStatsRow(
-                todayCalls = uiState.todayCalls,
-                fraudBlocked = uiState.fraudBlocked,
-                safeCalls = uiState.safeCalls
+            // ─────────────────────────────────────────────────────────────────
+            // SAFEx Guard + App Sentry — Primary Feature Cards
+            // ─────────────────────────────────────────────────────────────────
+            PrimaryFeatureCard(
+                icon = Icons.Default.SupportAgent,
+                title = "Ask SAFEx Guard",
+                subtitle = "Instant scam guidance, email & call fraud checks, voice mode",
+                iconBg = ShieldBlue,
+                onClick = onNavigateToChatbot
             )
 
-            // Quick Actions Grid
-            QuickActionsSection(
+            PrimaryFeatureCard(
+                icon = Icons.Default.Shield,
+                title = "App Sentry & APK Armor",
+                subtitle = "Scan installed apps, detect fake banking apps & inspect APKs",
+                iconBg = Color(0xFF1E3A5F),
+                onClick = onNavigateToAppSentry
+            )
+
+            // ─────────────────────────────────────────────────────────────────
+            // QUICK STATS — 3 columns
+            // ─────────────────────────────────────────────────────────────────
+            SectionHeader(title = "Today's Activity")
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                StatTile(
+                    value = uiState.todayCalls.toString(),
+                    label = "Analyzed",
+                    icon = Icons.Default.Phone,
+                    color = ShieldBlue,
+                    modifier = Modifier.weight(1f)
+                )
+                StatTile(
+                    value = uiState.fraudBlocked.toString(),
+                    label = "Blocked",
+                    icon = Icons.Default.Block,
+                    color = AlertCrimson,
+                    modifier = Modifier.weight(1f)
+                )
+                StatTile(
+                    value = uiState.safeCalls.toString(),
+                    label = "Safe",
+                    icon = Icons.Default.CheckCircle,
+                    color = TrustEmerald,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            // ─────────────────────────────────────────────────────────────────
+            // QUICK ACTIONS GRID — Minimum 80dp×80dp per cell
+            // ─────────────────────────────────────────────────────────────────
+            SectionHeader(title = "Quick Actions")
+
+            QuickActionsGrid(
                 onDashboardClick = onNavigateToDashboard,
                 onCallGuardClick = onNavigateToCallGuard,
                 onScannerClick = onNavigateToScanner,
                 onVerifyClick = onNavigateToVerification,
                 onEmergencyClick = onNavigateToEmergency,
-                onHistoryClick = onNavigateToHistory
+                onHistoryClick = onNavigateToHistory,
+                onReportFraudClick = onNavigateToReportFraud
             )
 
-            // Recent Alerts Carousel
+            // ─────────────────────────────────────────────────────────────────
+            // RECENT ALERTS STREAM
+            // ─────────────────────────────────────────────────────────────────
             if (uiState.recentAlerts.isNotEmpty()) {
-                RecentAlertsSection(
-                    alerts = uiState.recentAlerts,
-                    onSeeAllClick = onNavigateToHistory
+                SectionHeader(
+                    title = "Recent Alerts",
+                    actionLabel = "See All",
+                    onAction = onNavigateToHistory
                 )
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    uiState.recentAlerts.take(3).forEach { alert ->
+                        AlertListItem(alert = alert)
+                    }
+                }
             }
 
-            // Fraud Tips Carousel
-            FraudTipsSection(tips = uiState.fraudTips)
+            // ─────────────────────────────────────────────────────────────────
+            // FRAUD TIPS HORIZONTAL SCROLL
+            // ─────────────────────────────────────────────────────────────────
+            if (uiState.fraudTips.isNotEmpty()) {
+                SectionHeader(title = "Fraud Awareness")
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(horizontal = 0.dp)
+                ) {
+                    items(uiState.fraudTips) { tip ->
+                        FraudTipCard(tip = tip)
+                    }
+                }
+            }
 
-            // Protection Features
-            ProtectionFeaturesSection()
-
-            Spacer(modifier = Modifier.height(16.dp))
+            // ─────────────────────────────────────────────────────────────────
+            // PROTECTION FEATURES OVERVIEW
+            // ─────────────────────────────────────────────────────────────────
+            SectionHeader(title = "Protection Suite")
+            ProtectionSuiteList()
         }
     }
 }
 
+// ───────────────────────────────────────────────────────────────────────────────
+// HERO: Security Score Gauge Card
+// FastOutSlowInEasing arc sweep 800ms · semantic color transitions
+// ───────────────────────────────────────────────────────────────────────────────
 @Composable
-fun ProtectionStatusHeroCard(
+private fun HeroSecurityCard(
     isActive: Boolean,
-    protectionScore: Int,
-    pulseScale: Float,
-    onToggleProtection: () -> Unit,
-    onShieldClick: () -> Unit = {}
+    score: Int,
+    onToggle: () -> Unit,
+    onTap: () -> Unit
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(240.dp)
-            .clickable(onClick = onShieldClick),
-        shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isActive)
-                MaterialTheme.colorScheme.primaryContainer
-            else
-                MaterialTheme.colorScheme.errorContainer
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.radialGradient(
-                        colors = if (isActive) {
-                            listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                                MaterialTheme.colorScheme.primaryContainer,
-                                MaterialTheme.colorScheme.secondaryContainer
-                            )
-                        } else {
-                            listOf(
-                                MaterialTheme.colorScheme.error.copy(alpha = 0.3f),
-                                MaterialTheme.colorScheme.errorContainer
-                            )
-                        }
-                    )
-                )
-                .padding(24.dp)
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                // Shield Icon with Animation
-                Box(
-                    modifier = Modifier
-                        .size(100.dp * if (isActive) pulseScale else 1f)
-                        .clip(CircleShape)
-                        .background(
-                            if (isActive)
-                                MaterialTheme.colorScheme.primary
-                            else
-                                MaterialTheme.colorScheme.error
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = if (isActive) Icons.Default.Shield else Icons.Default.ShieldMoon,
-                        contentDescription = null,
-                        modifier = Modifier.size(50.dp),
-                        tint = Color.White
-                    )
-                }
-
-                // Status Text
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = if (isActive) "Protected" else "Not Protected",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-
-                    if (isActive) {
-                        Text(
-                            text = "Score: $protectionScore%",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-
-                    Text(
-                        text = if (isActive)
-                            "Real-time fraud detection active"
-                        else
-                            "Tap to enable protection",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-                    )
-                }
-
-                // Toggle Switch
-                Switch(
-                    checked = isActive,
-                    onCheckedChange = { onToggleProtection() },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color.White,
-                        checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = Color.White,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.outline
-                    )
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun QuickStatsRow(
-    todayCalls: Int,
-    fraudBlocked: Int,
-    safeCalls: Int
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        QuickStatCard(
-            icon = Icons.Default.Phone,
-            label = "Analyzed",
-            value = todayCalls.toString(),
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.weight(1f)
-        )
-
-        QuickStatCard(
-            icon = Icons.Default.Block,
-            label = "Blocked",
-            value = fraudBlocked.toString(),
-            color = MaterialTheme.colorScheme.error,
-            modifier = Modifier.weight(1f)
-        )
-
-        QuickStatCard(
-            icon = Icons.Default.CheckCircle,
-            label = "Safe",
-            value = safeCalls.toString(),
-            color = MaterialTheme.colorScheme.tertiary,
-            modifier = Modifier.weight(1f)
-        )
-    }
-}
-
-@Composable
-fun QuickStatCard(
-    icon: ImageVector,
-    label: String,
-    value: String,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier,
+            .clickable(onClick = onTap),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = color.copy(alpha = 0.1f)
-        )
+        color = SurfaceWhite,
+        border = BorderStroke(1.dp, BorderSubtle)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = color,
-                modifier = Modifier.size(28.dp)
-            )
-
+            // Screen Header style: 22sp SemiBold Shield Blue
             Text(
-                text = value,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = color
+                text = if (isActive) "Device Protected" else "Protection Off",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = ShieldBlue,
+                textAlign = TextAlign.Center
             )
 
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // The Security Gauge (animated arc, FastOutSlowIn 800ms)
+            SecurityScoreGauge(
+                score = if (isActive) score else 0,
+                modifier = Modifier
             )
-        }
-    }
-}
 
-@Composable
-fun QuickActionsSection(
-    onDashboardClick: () -> Unit,
-    onCallGuardClick: () -> Unit,
-    onScannerClick: () -> Unit,
-    onVerifyClick: () -> Unit,
-    onEmergencyClick: () -> Unit,
-    onHistoryClick: () -> Unit
-) {
-    Column {
-        Text(
-            "Quick Actions",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            // Toggle Protection Button — min 56.dp height
+            Button(
+                onClick = onToggle,
+                modifier = Modifier
+                    .fillMaxWidth(0.6f)
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isActive) ShieldBlue else AlertCrimson,
+                    contentColor = SurfaceWhite
+                )
             ) {
-                QuickActionCard(
-                    icon = Icons.Default.Dashboard,
-                    title = "Dashboard",
-                    subtitle = "View statistics",
-                    color = MaterialTheme.colorScheme.primary,
-                    onClick = onDashboardClick,
-                    modifier = Modifier.weight(1f)
+                Icon(
+                    imageVector = if (isActive) Icons.Default.Shield else Icons.Default.ShieldMoon,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
                 )
-
-                QuickActionCard(
-                    icon = Icons.Default.PhoneInTalk,
-                    title = "Call Guard",
-                    subtitle = "Real-time protection",
-                    color = MaterialTheme.colorScheme.secondary,
-                    onClick = onCallGuardClick,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                QuickActionCard(
-                    icon = Icons.Default.QrCodeScanner,
-                    title = "Scanner",
-                    subtitle = "Scan URLs/QR",
-                    color = MaterialTheme.colorScheme.tertiary,
-                    onClick = onScannerClick,
-                    modifier = Modifier.weight(1f)
-                )
-
-                QuickActionCard(
-                    icon = Icons.Default.VerifiedUser,
-                    title = "Verify",
-                    subtitle = "Check numbers",
-                    color = MaterialTheme.colorScheme.primary,
-                    onClick = onVerifyClick,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                QuickActionCard(
-                    icon = Icons.Default.Warning,
-                    title = "Emergency",
-                    subtitle = "Quick SOS",
-                    color = MaterialTheme.colorScheme.error,
-                    onClick = onEmergencyClick,
-                    modifier = Modifier.weight(1f)
-                )
-
-                QuickActionCard(
-                    icon = Icons.Default.History,
-                    title = "History",
-                    subtitle = "Call logs",
-                    color = MaterialTheme.colorScheme.outline,
-                    onClick = onHistoryClick,
-                    modifier = Modifier.weight(1f)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = if (isActive) "Active — Tap to Pause" else "Tap to Enable",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         }
     }
 }
 
+// ───────────────────────────────────────────────────────────────────────────────
+// PRIMARY FEATURE CARD — 56dp min height, tactile 3% scale feedback
+// ───────────────────────────────────────────────────────────────────────────────
 @Composable
-fun QuickActionCard(
+private fun PrimaryFeatureCard(
     icon: ImageVector,
     title: String,
     subtitle: String,
-    color: Color,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    iconBg: Color,
+    onClick: () -> Unit
 ) {
-    Card(
-        modifier = modifier
-            .height(100.dp)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.97f else 1.0f,
+        animationSpec = tween(100),
+        label = "feature_scale"
+    )
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .scale(scale)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            ),
+        shape = RoundedCornerShape(16.dp),
+        color = SurfaceWhite,
+        border = BorderStroke(1.dp, BorderSubtle)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            // Icon badge
             Box(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(color.copy(alpha = 0.15f)),
+                    .background(iconBg),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = SurfaceWhite,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                // Card Title: 16sp Medium Charcoal Black
+                Text(
+                    text = title,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = CharcoalBlack
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MutedSlate,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    lineHeight = 18.sp
+                )
+            }
+
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = null,
+                tint = SubduedSlate,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
+}
+
+// ───────────────────────────────────────────────────────────────────────────────
+// STAT TILE — Metric display 36sp Bold Charcoal Black letterSpacing 0.5sp
+// ───────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun StatTile(
+    value: String,
+    label: String,
+    icon: ImageVector,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        color = SurfaceWhite,
+        border = BorderStroke(1.dp, BorderSubtle)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(color.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
                     tint = color,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
-
-            Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun RecentAlertsSection(
-    alerts: List<HomeAlert>,
-    onSeeAllClick: () -> Unit
-) {
-    Column {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+            // Main metric: 36sp Bold, Charcoal Black, letterSpacing 0.5sp
             Text(
-                "Recent Alerts",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
+                text = value,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = CharcoalBlack,
+                letterSpacing = 0.5.sp
             )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MutedSlate,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
 
-            TextButton(onClick = onSeeAllClick) {
-                Text("See All")
-                Icon(Icons.Default.ArrowForward, null, modifier = Modifier.size(18.dp))
+// ───────────────────────────────────────────────────────────────────────────────
+// SECTION HEADER
+// ───────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun SectionHeader(
+    title: String,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp, bottom = 2.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Screen headers: 22sp SemiBold Shield Blue
+        Text(
+            text = title,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = CharcoalBlack
+        )
+        if (actionLabel != null && onAction != null) {
+            TextButton(onClick = onAction) {
+                Text(
+                    text = actionLabel,
+                    fontSize = 13.sp,
+                    color = ShieldBlue,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         }
+    }
+}
 
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(vertical = 8.dp)
-        ) {
-            items(alerts) { alert ->
-                AlertCard(alert)
+// ───────────────────────────────────────────────────────────────────────────────
+// QUICK ACTIONS GRID — 80dp×80dp cells, tactile feedback
+// ───────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun QuickActionsGrid(
+    onDashboardClick: () -> Unit,
+    onCallGuardClick: () -> Unit,
+    onScannerClick: () -> Unit,
+    onVerifyClick: () -> Unit,
+    onEmergencyClick: () -> Unit,
+    onHistoryClick: () -> Unit,
+    onReportFraudClick: () -> Unit
+) {
+    val actions = listOf(
+        Triple(Icons.Default.Dashboard, "Dashboard", onDashboardClick) to ShieldBlue,
+        Triple(Icons.Default.Security, "Call Guard", onCallGuardClick) to TrustEmerald,
+        Triple(Icons.Default.QrCode, "URL Scanner", onScannerClick) to ShieldBlueLight,
+        Triple(Icons.Default.VerifiedUser, "Verify Contact", onVerifyClick) to CautionAmber,
+        Triple(Icons.Default.ReportProblem, "Report Fraud", onReportFraudClick) to AlertCrimson,
+        Triple(Icons.Default.Emergency, "Emergency SOS", onEmergencyClick) to AlertCrimson,
+        Triple(Icons.Default.History, "History", onHistoryClick) to MutedSlate,
+    )
+
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        actions.chunked(3).forEach { rowActions ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                rowActions.forEach { (triple, color) ->
+                    val (icon, label, onClick) = triple
+                    ActionCell(
+                        icon = icon,
+                        label = label,
+                        color = color,
+                        onClick = onClick,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                // Fill empty cells in the last row
+                repeat(3 - rowActions.size) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
         }
     }
 }
 
 @Composable
-fun AlertCard(alert: HomeAlert) {
-    Card(
-        modifier = Modifier.width(280.dp),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = when (alert.severity) {
-                "HIGH" -> MaterialTheme.colorScheme.errorContainer
-                "MEDIUM" -> MaterialTheme.colorScheme.tertiaryContainer
-                else -> MaterialTheme.colorScheme.surfaceVariant
+private fun ActionCell(
+    icon: ImageVector,
+    label: String,
+    color: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.97f else 1.0f,
+        animationSpec = tween(100),
+        label = "action_cell_scale"
+    )
+
+    Surface(
+        modifier = modifier
+            .height(90.dp)
+            .scale(scale)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            ),
+        shape = RoundedCornerShape(16.dp),
+        color = SurfaceWhite,
+        border = BorderStroke(1.dp, BorderSubtle)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(38.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(color.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = label,
+                    tint = color,
+                    modifier = Modifier.size(20.dp)
+                )
             }
-        )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium,
+                color = CharcoalBlack,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                lineHeight = 14.sp
+            )
+        }
+    }
+}
+
+// ───────────────────────────────────────────────────────────────────────────────
+// ALERT LIST ITEM
+// ───────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun AlertListItem(alert: HomeAlert) {
+    val (bgColor, borderColor, dotColor) = when (alert.severity.uppercase()) {
+        "CRITICAL", "HIGH" -> Triple(AlertCrimsonContainer, AlertCrimsonBorder, AlertCrimson)
+        "MEDIUM" -> Triple(CautionAmberContainer, CautionAmberBorder, CautionAmber)
+        else -> Triple(ShieldBlueContainer, BorderSubtle, ShieldBlue)
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        color = bgColor,
+        border = BorderStroke(1.dp, borderColor)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                .padding(14.dp),
+            verticalAlignment = Alignment.Top
         ) {
-            Icon(
-                Icons.Default.Warning,
-                contentDescription = null,
-                tint = when (alert.severity) {
-                    "HIGH" -> MaterialTheme.colorScheme.error
-                    "MEDIUM" -> MaterialTheme.colorScheme.tertiary
-                    else -> MaterialTheme.colorScheme.outline
-                }
+            Box(
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(dotColor)
             )
-
+            Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    alert.title,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold
+                    text = alert.title,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = CharcoalBlack
                 )
-
                 Text(
-                    alert.description,
+                    text = alert.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                    maxLines = 2
+                    color = MutedSlate,
+                    lineHeight = 18.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
-
+                Spacer(modifier = Modifier.height(2.dp))
+                // Timestamp: 13sp Regular Muted Slate
                 Text(
-                    alert.timestamp,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    text = alert.timestamp,
+                    fontSize = 12.sp,
+                    color = SubduedSlate
                 )
             }
         }
     }
 }
 
+// ───────────────────────────────────────────────────────────────────────────────
+// FRAUD TIP CARD — horizontal scroll carousel
+// ───────────────────────────────────────────────────────────────────────────────
 @Composable
-fun FraudTipsSection(tips: List<String>) {
-    Column {
-        Text(
-            "Fraud Prevention Tips",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(vertical = 8.dp)
-        ) {
-            items(tips) { tip ->
-                TipCard(tip)
-            }
-        }
-    }
-}
-
-@Composable
-fun TipCard(tip: String) {
-    Card(
+private fun FraudTipCard(tip: String) {
+    Surface(
         modifier = Modifier.width(260.dp),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        shape = RoundedCornerShape(16.dp),
+        color = ShieldBlueContainer,
+        border = BorderStroke(1.dp, BorderSubtle)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.Top
         ) {
             Icon(
-                Icons.Default.Lightbulb,
+                imageVector = Icons.Default.Lightbulb,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = ShieldBlue,
+                modifier = Modifier.size(20.dp)
             )
-
+            Spacer(modifier = Modifier.width(10.dp))
             Text(
-                tip,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.weight(1f)
+                text = tip,
+                fontSize = 13.sp,
+                color = CharcoalBlack,
+                lineHeight = 19.sp
             )
         }
     }
 }
 
+// ───────────────────────────────────────────────────────────────────────────────
+// PROTECTION SUITE — Feature list
+// ───────────────────────────────────────────────────────────────────────────────
 @Composable
-fun ProtectionFeaturesSection() {
-    Column {
-        Text(
-            "Protection Features",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
+private fun ProtectionSuiteList() {
+    val features = listOf(
+        Triple(Icons.Default.Call, "Call Guard", "Live AI scam call analysis"),
+        Triple(Icons.Default.Link, "URL Scanner", "Phishing & fraud link detection"),
+        Triple(Icons.Default.DevicesOther, "Device Security", "System vulnerability checks"),
+        Triple(Icons.Default.SupportAgent, "SAFEx Guard AI", "24/7 fraud guidance assistant"),
+        Triple(Icons.Default.Shield, "App Sentry", "Installed app threat detection"),
+        Triple(Icons.Default.FolderZip, "APK Armor", "Pre-install file inspection"),
+    )
 
-        val features = listOf(
-            Triple(Icons.Default.Mic, "Real-time Voice Analysis", "AI-powered fraud detection during calls"),
-            Triple(Icons.Default.Shield, "Call Recording", "Automatic recording of suspicious calls"),
-            Triple(Icons.Default.Notifications, "Instant Alerts", "Get notified immediately of fraud attempts"),
-            Triple(Icons.Default.Lock, "Encrypted Database", "Your data is safe with AES-256 encryption")
-        )
-
-        features.forEach { (icon, title, description) ->
-            FeatureItem(icon, title, description)
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-    }
-}
-
-@Composable
-fun FeatureItem(icon: ImageVector, title: String, description: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = SurfaceWhite,
+        border = BorderStroke(1.dp, BorderSubtle)
     ) {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-            )
+        Column {
+            features.forEachIndexed { index, (icon, title, desc) ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 18.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(ShieldBlueContainer),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = ShieldBlue,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = title,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = CharcoalBlack
+                        )
+                        Text(
+                            text = desc,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MutedSlate
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .clip(CircleShape)
+                            .background(TrustEmerald)
+                    )
+                }
+                if (index < features.size - 1) {
+                    HorizontalDivider(
+                        color = BorderSubtle,
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(horizontal = 18.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -704,23 +772,9 @@ fun getCurrentGreeting(): String {
     }
 }
 
-// Data Classes
 data class HomeAlert(
     val title: String,
     val description: String,
     val timestamp: String,
     val severity: String
 )
-
-@Preview(showBackground = true)
-@Composable
-fun ProtectionStatusPreview() {
-    SAFExTheme {
-        ProtectionStatusHeroCard(
-            isActive = true,
-            protectionScore = 98,
-            pulseScale = 1.0f,
-            onToggleProtection = {}
-        )
-    }
-}

@@ -2,30 +2,56 @@ package com.safex.app.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Primary Colors
-val Navy = Color(0xFF0A1628)
-val NavyLight = Color(0xFF1A2640)
-val Cyan = Color(0xFF00D4FF)
-val CyanDim = Color(0xFF0099BB)
+// =========================================================================
+// SAFEx Production-Grade Design System Color Tokens
+// =========================================================================
 
-// Status Colors
-val Red = Color(0xFFFF3B5C)
-val Amber = Color(0xFFFFB800)
-val Green = Color(0xFF00D68F)
+// Primary Brand Colors
+val ShieldBlue = Color(0xFF0F2942)          // Deep, authoritative navy/slate
+val ShieldBlueDark = Color(0xFF0A1D30)      // Pressed state / darker headers
+val ShieldBlueLight = Color(0xFF1E3A5F)     // Secondary interactive accents
+val ShieldBlueContainer = Color(0xFFE8EEF5) // Soft tint for badge containers
 
-// Surface Colors
-val Surface = Color(0xFF0F1E35)
-val Card = Color(0xFF162035)
-val Divider = Color(0xFF1E2E45)
+// Backgrounds & Surfaces
+val CleanSlate = Color(0xFFF4F6F9)          // Soft off-white to reduce eye strain
+val SurfaceWhite = Color(0xFFFFFFFF)        // Crisp white card surface
+val BorderSubtle = Color(0xFFE2E8F0)        // 1dp subtle structural card border
+val SurfaceMuted = Color(0xFFF8FAFC)        // Sub-sections & inputs
 
 // Text Colors
-val PrimaryText = Color(0xFFECF0F8)
-val SecondaryText = Color(0xFF8899AA)
+val CharcoalBlack = Color(0xFF1E293B)       // Primary text - high contrast
+val MutedSlate = Color(0xFF64748B)          // Secondary labels, timestamps
+val SubduedSlate = Color(0xFF94A3B8)        // Placeholder, subtle icons
 
-// Light Theme Colors
-val LightBackground = Color(0xFFF5F5F0)
-val LightSurface = Color(0xFFFFFFFF)
-val LightCard = Color(0xFFF0F0EB)
-val LightPrimaryText = Color(0xFF1A1A1A)
-val LightSecondaryText = Color(0xFF666666)
-val LightDivider = Color(0xFFE0E0E0)
+// Semantic Safety Colors (Authoritative Traffic-Light System)
+val TrustEmerald = Color(0xFF10B981)        // Safe Status - Rich emerald green
+val TrustEmeraldContainer = Color(0xFFECFDF5)
+val TrustEmeraldBorder = Color(0xFFA7F3D0)
+
+val CautionAmber = Color(0xFFF59E0B)        // Warning Status - Warm, high-visibility orange
+val CautionAmberContainer = Color(0xFFFFFBEB)
+val CautionAmberBorder = Color(0xFFFDE68A)
+
+val AlertCrimson = Color(0xFFEF4444)        // Danger/Alert Status - Urgent, authoritative red
+val AlertCrimsonContainer = Color(0xFFFEF2F2)
+val AlertCrimsonBorder = Color(0xFFFECACA)
+
+// Backward-compatibility aliases for legacy screens
+val Navy = ShieldBlue
+val NavyLight = ShieldBlueLight
+val Cyan = ShieldBlueLight
+val CyanDim = ShieldBlue
+val Red = AlertCrimson
+val Amber = CautionAmber
+val Green = TrustEmerald
+val Surface = SurfaceWhite
+val Card = SurfaceWhite
+val Divider = BorderSubtle
+val PrimaryText = CharcoalBlack
+val SecondaryText = MutedSlate
+val LightBackground = CleanSlate
+val LightSurface = SurfaceWhite
+val LightCard = SurfaceWhite
+val LightPrimaryText = CharcoalBlack
+val LightSecondaryText = MutedSlate
+val LightDivider = BorderSubtle

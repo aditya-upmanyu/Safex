@@ -15,4 +15,7 @@ sealed class Screen(val route: String) {
     data object VoiceAnalysis : Screen("voice_analysis/{callId}") {
         fun createRoute(callId: Long) = "voice_analysis/$callId"
     }
+    data object Chatbot : Screen("chatbot")
+    data object ChatbotVoice : Screen("chatbot_voice")
+    data object AppSentry : Screen("app_sentry")
 }

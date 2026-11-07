@@ -1,8 +1,12 @@
 package com.safex.app.presentation.screens.onboarding
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -10,17 +14,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.safex.app.R
-import com.safex.app.presentation.theme.Spacing
+import com.safex.app.presentation.theme.*
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.ui.tooling.preview.Preview
-import com.safex.app.presentation.theme.SAFExTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -49,11 +53,14 @@ fun OnboardingScreen(
         )
     )
 
-    Scaffold { padding ->
+    Scaffold(
+        containerColor = CleanSlate
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .padding(24.dp)
         ) {
             HorizontalPager(
                 state = pagerState,
@@ -62,22 +69,54 @@ fun OnboardingScreen(
                 OnboardingPageContent(pages[page])
             }
 
+            // Pager Indicator Dots
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(Spacing.large),
+                    .padding(vertical = 16.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                repeat(pages.size) { iteration ->
+                    val color = if (pagerState.currentPage == iteration) ShieldBlue else BorderSubtle
+                    val width = if (pagerState.currentPage == iteration) 24.dp else 8.dp
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .height(8.dp)
+                            .width(width)
+                            .clip(CircleShape)
+                            .background(color)
+                    )
+                }
+            }
+
+            // Navigation Actions (Minimum 56.dp height)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (pagerState.currentPage < pages.size - 1) {
                     TextButton(
                         onClick = {
+                            viewModel.completeOnboarding()
+                            onNavigateNext()
+                        }
+                    ) {
+                        Text("Skip", color = MutedSlate, fontSize = 15.sp)
+                    }
+
+                    Button(
+                        onClick = {
                             scope.launch {
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
                             }
-                        }
+                        },
+                        modifier = Modifier.height(52.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = ShieldBlue)
                     ) {
-                        Text(stringResource(R.string.onboarding_next))
+                        Text(stringResource(R.string.onboarding_next), fontWeight = FontWeight.SemiBold)
                     }
                 } else {
                     Button(
@@ -85,9 +124,17 @@ fun OnboardingScreen(
                             viewModel.completeOnboarding()
                             onNavigateNext()
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = ShieldBlue)
                     ) {
-                        Text(stringResource(R.string.onboarding_get_started))
+                        Text(
+                            stringResource(R.string.onboarding_get_started),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
@@ -100,28 +147,43 @@ fun OnboardingPageContent(page: OnboardingPage) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(Spacing.large),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            imageVector = page.icon,
-            contentDescription = null,
-            modifier = Modifier.size(120.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Spacer(modifier = Modifier.height(Spacing.extraLarge))
+        Box(
+            modifier = Modifier
+                .size(130.dp)
+                .clip(CircleShape)
+                .background(ShieldBlueContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = page.icon,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = ShieldBlue
+            )
+        }
+
+        Spacer(modifier = Modifier.height(36.dp))
+
         Text(
             text = page.title,
-            style = MaterialTheme.typography.headlineMedium,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = ShieldBlue,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(Spacing.medium))
+
+        Spacer(modifier = Modifier.height(14.dp))
+
         Text(
             text = page.description,
-            style = MaterialTheme.typography.bodyLarge,
+            fontSize = 15.sp,
+            color = CharcoalBlack,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            lineHeight = 22.sp
         )
     }
 }
@@ -131,20 +193,3 @@ data class OnboardingPage(
     val title: String,
     val description: String
 )
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun OnboardingPreview() {
-    SAFExTheme {
-        Surface {
-            OnboardingPageContent(
-                page = OnboardingPage(
-                    icon = Icons.Default.Security,
-                    title = "AI Scam Call Guard",
-                    description = "Real-time AI monitoring detects fraudulent patterns and protects your conversations."
-                )
-            )
-        }
-    }
-}
-

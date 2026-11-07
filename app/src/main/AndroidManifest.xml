@@ -36,6 +36,19 @@
     <!-- Biometric -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
+    <!-- App Sentry: Query installed packages for security scanning -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <!-- Queries for Speech Recognition and Text-To-Speech services (Android 11+) -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:name=".SAFExApplication"
         android:allowBackup="false"
