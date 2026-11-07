@@ -198,7 +198,10 @@ fun EnhancedHomeScreen(
                 onHistoryClick = onNavigateToHistory,
                 onReportFraudClick = onNavigateToReportFraud,
                 onSecurityAdvisorClick = onNavigateToSecurityAdvisor,
-                onCoreDefenseClick = onNavigateToCoreDefense
+                onCoreDefenseClick = onNavigateToCoreDefense,
+                onDeviceSecurityClick = onNavigateToDeviceSecurity,
+                onChatbotClick = onNavigateToChatbot,
+                onAppSentryClick = onNavigateToAppSentry
             )
 
             // ─────────────────────────────────────────────────────────────────
@@ -505,18 +508,24 @@ private fun QuickActionsGrid(
     onHistoryClick: () -> Unit,
     onReportFraudClick: () -> Unit,
     onSecurityAdvisorClick: () -> Unit,
-    onCoreDefenseClick: () -> Unit
+    onCoreDefenseClick: () -> Unit,
+    onDeviceSecurityClick: () -> Unit,
+    onChatbotClick: () -> Unit,
+    onAppSentryClick: () -> Unit
 ) {
     val actions = listOf(
         Triple(Icons.Default.Dashboard, "Dashboard", onDashboardClick) to ShieldBlue,
         Triple(Icons.Default.Security, "Call Guard", onCallGuardClick) to TrustEmerald,
+        Triple(Icons.Default.GppGood, "Core Defense", onCoreDefenseClick) to TrustEmerald,
+        Triple(Icons.Default.Shield, "Device Security", onDeviceSecurityClick) to ShieldBlue,
         Triple(Icons.Default.QrCode, "URL Scanner", onScannerClick) to ShieldBlueLight,
+        Triple(Icons.Default.Apps, "App Sentry", onAppSentryClick) to CautionAmber,
         Triple(Icons.Default.VerifiedUser, "Verify Contact", onVerifyClick) to CautionAmber,
+        Triple(Icons.Default.Chat, "AI Chatbot", onChatbotClick) to ShieldBlue,
         Triple(Icons.Default.ReportProblem, "Report Fraud", onReportFraudClick) to AlertCrimson,
         Triple(Icons.Default.Emergency, "Emergency SOS", onEmergencyClick) to AlertCrimson,
         Triple(Icons.Default.History, "History", onHistoryClick) to MutedSlate,
         Triple(Icons.Default.AdminPanelSettings, "Security Advisor", onSecurityAdvisorClick) to ShieldBlue,
-        Triple(Icons.Default.GppGood, "Core Defense", onCoreDefenseClick) to TrustEmerald,
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
