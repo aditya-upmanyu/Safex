@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +47,7 @@ fun UrlScannerScreen(
     viewModel: UrlScannerViewModel = hiltViewModel()
 ) {
     var urlInput by remember { mutableStateOf("") }
+    var showQrScanner by remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
 
@@ -210,12 +213,41 @@ fun UrlScannerScreen(
                 border = BorderStroke(1.dp, BorderSubtle)
             ) {
                 Column(modifier = Modifier.padding(18.dp)) {
-                    Text(
-                        text = "Website or Link URL",
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = CharcoalBlack
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Website or Link URL",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = CharcoalBlack
+                        )
+                        
+                        // QR Scanner Button
+                        OutlinedButton(
+                            onClick = { showQrScanner = true },
+                            modifier = Modifier.height(36.dp),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = ShieldBlue
+                            ),
+                            border = BorderStroke(1.dp, ShieldBlue)
+                        ) {
+                            Icon(
+                                Icons.Default.QrCodeScanner,
+                                contentDescription = "Scan QR Code",
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                "Scan QR",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
 
                     OutlinedTextField(
@@ -263,17 +295,31 @@ fun UrlScannerScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = ShieldBlue,
                             disabledContainerColor = BorderSubtle,
-                            contentColor = SurfaceWhite
+                            contentColor = Color.White
                         ),
                         interactionSource = interactionSource
                     ) {
                         Text(
                             text = stringResource(R.string.url_scanner_scan_button),
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White
                         )
                     }
                 }
+            }
+            
+            // QR Scanner Dialog
+            if (showQrScanner) {
+                QrScannerDialog(
+                    onDismiss = { showQrScanner = false },
+                    onQrCodeScanned = { scannedUrl ->
+                        urlInput = scannedUrl
+                        showQrScanner = false
+                        // Auto-scan the detected URL
+                        viewModel.scanUrl(scannedUrl.trim())
+                    }
+                )
             }
 
             // ─────────────────────────────────────────────────────────────────
@@ -430,3 +476,114 @@ private fun DetailRow(label: String, value: String) {
 }
 
 private data class Quintuple<A, B, C, D, E>(val first: A, val second: B, val third: C, val fourth: D, val fifth: E)
+
+@Composable
+private fun QrScannerDialog(
+    onDismiss: () -> Unit,
+    onQrCodeScanned: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = SurfaceWhite,
+        shape = RoundedCornerShape(16.dp),
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Icon(
+                    Icons.Default.QrCodeScanner,
+                    contentDescription = null,
+                    tint = ShieldBlue,
+                    modifier = Modifier.size(28.dp)
+                )
+                Text(
+                    "Scan QR Code",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = CharcoalBlack
+                )
+            }
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Camera preview placeholder
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(CleanSlate)
+                        .clickable { 
+                            // Simulate QR code scan for demo
+                            onQrCodeScanned("https://example.com/scanned-qr-code")
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.QrCodeScanner,
+                            contentDescription = null,
+                            tint = ShieldBlue,
+                            modifier = Modifier.size(64.dp)
+                        )
+                        Text(
+                            "Point camera at QR code",
+                            fontSize = 14.sp,
+                            color = MutedSlate,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            "(Tap here for demo)",
+                            fontSize = 12.sp,
+                            color = SubduedSlate,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = ShieldBlueContainer,
+                    border = BorderStroke(1.dp, ShieldBlue.copy(alpha = 0.3f))
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.Security,
+                            contentDescription = null,
+                            tint = ShieldBlue,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            "QR codes will be analyzed for safety before opening",
+                            fontSize = 12.sp,
+                            color = ShieldBlue,
+                            lineHeight = 16.sp
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onDismiss,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = ShieldBlue
+                )
+            ) {
+                Text("Cancel", fontWeight = FontWeight.SemiBold)
+            }
+        }
+    )
+}
