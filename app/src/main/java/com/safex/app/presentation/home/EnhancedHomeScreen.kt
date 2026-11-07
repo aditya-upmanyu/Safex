@@ -49,6 +49,7 @@ fun EnhancedHomeScreen(
     onNavigateToReportFraud: () -> Unit = {},
     onNavigateToChatbot: () -> Unit = {},
     onNavigateToAppSentry: () -> Unit = {},
+    onNavigateToSecurityAdvisor: () -> Unit = {},
     viewModel: EnhancedHomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -194,7 +195,8 @@ fun EnhancedHomeScreen(
                 onVerifyClick = onNavigateToVerification,
                 onEmergencyClick = onNavigateToEmergency,
                 onHistoryClick = onNavigateToHistory,
-                onReportFraudClick = onNavigateToReportFraud
+                onReportFraudClick = onNavigateToReportFraud,
+                onSecurityAdvisorClick = onNavigateToSecurityAdvisor
             )
 
             // ─────────────────────────────────────────────────────────────────
@@ -497,7 +499,8 @@ private fun QuickActionsGrid(
     onVerifyClick: () -> Unit,
     onEmergencyClick: () -> Unit,
     onHistoryClick: () -> Unit,
-    onReportFraudClick: () -> Unit
+    onReportFraudClick: () -> Unit,
+    onSecurityAdvisorClick: () -> Unit
 ) {
     val actions = listOf(
         Triple(Icons.Default.Dashboard, "Dashboard", onDashboardClick) to ShieldBlue,
@@ -507,6 +510,7 @@ private fun QuickActionsGrid(
         Triple(Icons.Default.ReportProblem, "Report Fraud", onReportFraudClick) to AlertCrimson,
         Triple(Icons.Default.Emergency, "Emergency SOS", onEmergencyClick) to AlertCrimson,
         Triple(Icons.Default.History, "History", onHistoryClick) to MutedSlate,
+        Triple(Icons.Default.AdminPanelSettings, "Security Advisor", onSecurityAdvisorClick) to ShieldBlue,
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {

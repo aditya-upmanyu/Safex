@@ -67,7 +67,8 @@ fun SAFExNavGraph(
                 onNavigateToDeviceSecurity = { navController.navigate(Screen.DeviceSecurity.route) },
                 onNavigateToReportFraud = { navController.navigate(Screen.ReportFraud.route) },
                 onNavigateToChatbot = { navController.navigate(Screen.Chatbot.route) },
-                onNavigateToAppSentry = { navController.navigate(Screen.AppSentry.route) }
+                onNavigateToAppSentry = { navController.navigate(Screen.AppSentry.route) },
+                onNavigateToSecurityAdvisor = { navController.navigate(Screen.SecurityAdvisor.route) }
             )
         }
 
@@ -171,6 +172,12 @@ fun SAFExNavGraph(
 
         composable(Screen.AppSentry.route) {
             AppSentryScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.SecurityAdvisor.route) {
+            DeviceSecurityScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

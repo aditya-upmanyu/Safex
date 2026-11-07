@@ -19,4 +19,5 @@ sealed class Screen(val route: String) {
     data object ChatbotVoice : Screen("chatbot_voice")
     data object AppSentry : Screen("app_sentry")
     data object PrivacyPolicy : Screen("privacy_policy")
+    data object SecurityAdvisor : Screen("security_advisor")
 }
